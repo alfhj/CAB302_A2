@@ -1,0 +1,45 @@
+Larysa:
+Item
+Manifest
+Exceptions
+
+Alf:
+Stock
+Truck
+CSVHandler
+
+Both:
+Store
+
+
+
+Class hierarchy, model:
+Item:
+String name;
+int cost;
+int price;
+int reorderPoint;
+int reorderAmount;
+int temperature;
+
+public Item(String name, int cost
+   this.name = name;
+   this.cost = cost;
+
+----
+
+Item item1 = new Item("Rice", 2, 3,..)
+item1.setName(); -> "Rice"
+
+Test driven development
+not red, green, refactor
+
+Read csv:
+Data structure:
+
+git log command updated
+
+CSVFormatException
+DeliveryException
+StockException
+
