@@ -1,7 +1,7 @@
 Larysa:
 Item
-Manifest
 Exceptions
+Manifest
 
 Alf:
 Stock
