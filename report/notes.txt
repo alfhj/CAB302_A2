@@ -44,10 +44,10 @@ Class: Stock
 A collection of Items. A HashMap is chosen to keep track of the included items and their amounts. The method "getStock" creates a copy (or unmodifiableMap) of the original HashMap, so that the values are protected.
 
 Cases:
+The amount to be added is negative or zero
 The item to be removed is not in stock
 The amount to be removed is more than is available in stock
 All of one item is removed -> Item should be removed from stock (instead of setting amount to 0)
-The amount to be added is negative or zero
 
 Fields:
 -	Map<Item, Integer> stock
@@ -61,7 +61,7 @@ Abstract class: Truck
 An abstract class for trucks. The constructor (no access modifier) takes two arguments: capacity and cargo.
 
 Cases:
-Capacity is negative or zero
+Capacity is negative or zero. Constructor: capacity and cargo
 
 Fields:
 -	int capacity
@@ -81,7 +81,7 @@ Fields:
 ---
 
 Class: RefrigeratedTruck extends Truck
-A refrigerated truck. The constructor takes 3 parameters.
+A refrigerated truck. The constructor takes 3 parameters. The truck's temperature should be equal to the lowest temperature of the items.
 
 Fields:
 -	int temperature
@@ -101,8 +101,10 @@ Fields:
 ---
 
 Class (singleton): Store
-Singleton pattern, as there is only one store. 
+Singleton pattern, as there is only one store.
+Approach to generating manifests: If needed items contains a refrigerated item, create a truck with temperature equal to the lowest temperature of the needed items. Fill the truck with the lowest temperature items. If it gets full, create a new truck depending on the temperature of the remainding items. Repeat.
 
+Fields:
 -	double capital
 -	Stock inventory
 -	String name
