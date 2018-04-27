@@ -14,7 +14,6 @@ import org.junit.Test;
 public class ItemTest {
 	
 	Item item;
-	// test 1
 
 	@Before
 	public void setUp() throws Exception {
