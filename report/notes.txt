@@ -11,7 +11,20 @@ CSVHandler
 Both:
 Store
 
+---
+
 Class: Item
+The class to store an item. It has 6 fields and 2 constructors, with and without temperature.
+
+Cases:
+Name is empty
+Cost is negative
+Price is negative or zero
+Reorder point is negative
+Reorder amount is negative or zero
+Temperature is very high/low
+
+Fields:
 -	String name
 -	int cost
 -	int price
@@ -25,31 +38,71 @@ Class: Item
 + int getReorderAmount()
 + int getTemperature()
 
+---
+
 Class: Stock
--	Map<Item, Integerk> stock
+A collection of Items. A HashMap is chosen to keep track of the included items and their amounts. The method "getStock" creates a copy (or unmodifiableMap) of the original HashMap, so that the values are protected.
+
+Cases:
+The item to be removed is not in stock
+The amount to be removed is more than is available in stock
+All of one item is removed -> Item should be removed from stock (instead of setting amount to 0)
+The amount to be added is negative or zero
+
+Fields:
+-	Map<Item, Integer> stock
 + void addItems(Item item, int amount)
 + void remoteItems(Item item, int amount) throws StockException
 + Map<Item, Integer> getStock() = new Stock() -> addItems...
 
+---
+
 Abstract class: Truck
+An abstract class for trucks. The constructor (no access modifier) takes two arguments: capacity and cargo.
+
+Cases:
+Capacity is negative or zero
+
+Fields:
 -	int capacity
 -	Stock cargo
-+ double getCost()
+A+ double getCost()
 + int getCapacity()
 + Stock getCargo()
 
+---
+
 Class: OrdinaryTruck extends Truck
+An unrefrigerated truck. The constructor takes 2 parameters.
+
+Fields:
++ double getCost()
+
+---
 
 Class: RefrigeratedTruck extends Truck
+A refrigerated truck. The constructor takes 3 parameters.
+
+Fields:
 -	int temperature
 + int getTemperature()
++ double getCost()
+
+---
 
 Class: Manifest
+A collection of trucks. Set is being used to avoid two identical trucks on the same manifest. "getTotalCost" calculates the total cost of the manifest by summing the cost of each truck together with the prices of all the items.
+
+Fields:
 -	Set<Truck> fleet
 + void addTruck(Truck truck)
 + double getTotalCost()
 
+---
+
 Class (singleton): Store
+Singleton pattern, as there is only one store. 
+
 -	double capital
 -	Stock inventory
 -	String name
@@ -57,17 +110,19 @@ Class (singleton): Store
 + Stock getInventory()
 + String getName()
 + void loadInventory(Stock items)
-+ Manifest exportManifest()
-+ void importManifest(Manifest manifest)
 + void importSalesLog(Stock sales)
++ void importManifest(Manifest manifest)
++ Manifest exportManifest()
+
+---
 
 Class (singleton): CSVHandler
 + String readCSV(File file)
 + void writeCSV(File file, String output)
-// +  readItemProperties(File file)
-// + Stock readSalesLog(File file)
-// +  readManifest(File file)
-
++ Stock readItemProperties(File file)
++ Stock readSalesLog(File file)
++ Manifest readManifest(File file)
++ void writeManifest(File file, Manifest output)
 
 public Item(String name, int cost
    this.name = name;
