@@ -8,12 +8,11 @@ import org.junit.Test;
 
 public class ManifestTest {
 
+	Manifest manifest;
+	
 	@Before
 	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
+		Manifest = new Manifest();
 	}
 
 	@Test
