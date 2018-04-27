@@ -95,6 +95,9 @@ Fields:
 Class: Manifest
 A collection of trucks. Set is being used to avoid two identical trucks on the same manifest. "getTotalCost" calculates the total cost of the manifest by summing the cost of each truck together with the prices of all the items.
 
+Cases:
+
+
 Fields:
 -	Set<Truck> fleet
 + void addTruck(Truck truck)
@@ -105,6 +108,8 @@ Fields:
 Class (singleton): Store
 Singleton pattern, as there is only one store.
 Approach to generating manifests: If needed items contains a refrigerated item, create a truck with temperature equal to the lowest temperature of the needed items. Fill the truck with the lowest temperature items. If it gets full, create a new truck depending on the temperature of the remainding items. Repeat.
+
+Cases:
 
 Fields:
 -	double capital
