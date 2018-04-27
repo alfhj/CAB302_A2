@@ -11,16 +11,63 @@ CSVHandler
 Both:
 Store
 
+Class: Item
+-	String name
+-	int cost
+-	int price
+-	int reorderPoint
+-	int reorderAmount
+-	int temperature
++ String getName()
++ int getCost()
++ int getPrice()
++ int getReorderPoint()
++ int getReorderAmount()
++ int getTemperature()
 
+Class: Stock
+-	Map<Item, Integerk> stock
++ void addItems(Item item, int amount)
++ void remoteItems(Item item, int amount) throws StockException
++ Map<Item, Integer> getStock() = new Stock() -> addItems...
 
-Class hierarchy, model:
-Item:
-String name;
-int cost;
-int price;
-int reorderPoint;
-int reorderAmount;
-int temperature;
+Abstract class: Truck
+-	int capacity
+-	Stock cargo
++ double getCost()
++ int getCapacity()
++ Stock getCargo()
+
+Class: OrdinaryTruck extends Truck
+
+Class: RefrigeratedTruck extends Truck
+-	int temperature
++ int getTemperature()
+
+Class: Manifest
+-	Set<Truck> fleet
++ void addTruck(Truck truck)
++ double getTotalCost()
+
+Class (singleton): Store
+-	double capital
+-	Stock inventory
+-	String name
++ double getCapital()
++ Stock getInventory()
++ String getName()
++ void loadInventory(Stock items)
++ Manifest exportManifest()
++ void importManifest(Manifest manifest)
++ void importSalesLog(Stock sales)
+
+Class (singleton): CSVHandler
++ String readCSV(File file)
++ void writeCSV(File file, String output)
+// +  readItemProperties(File file)
+// + Stock readSalesLog(File file)
+// +  readManifest(File file)
+
 
 public Item(String name, int cost
    this.name = name;
