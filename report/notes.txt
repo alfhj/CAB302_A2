@@ -1,7 +1,7 @@
 Larysa:
 Item
-Exceptions
 Manifest
+Exceptions
 
 Alf:
 Stock
@@ -44,16 +44,18 @@ Class: Stock
 A collection of Items. A HashMap is chosen to keep track of the included items and their amounts. The method "getStock" creates a copy (or unmodifiableMap) of the original HashMap, so that the values are protected.
 
 Edge cases:
-The amount to be added is negative or zero
+The amount to be added is negative
 The item to be removed is not in stock
 The amount to be removed is more than is available in stock
-All of one item is removed -> Item should be removed from stock (instead of setting amount to 0)
+All of one item is removed -> set amount to 0 (don't delete item)
 
 Fields:
 -	Map<Item, Integer> stock
 + void addItems(Item item, int amount)
 + void removeItems(Item item, int amount) throws StockException
 + Map<Item, Integer> getStock() = new Stock() -> addItems...
+
+Remove 1 itemn
 
 ---
 
@@ -100,6 +102,7 @@ Fleet is empty when calculating total cost
 Fields:
 -	Set<Truck> fleet
 + void addTruck(Truck truck)
++ Set<Truck> getFleet()
 + double getTotalCost()
 
 ---
@@ -133,41 +136,45 @@ Class (singleton): CSVHandler
 + Manifest readManifest(File file)
 + void writeManifest(File file, Manifest output)
 
-public Item(String name, int cost
-   this.name = name;
-   this.cost = cost;
-
 -----
 
 GUI:
 ______________________________________________________________
 |          [store name] - Inventory management      [_][O][X]|
 |____________________________________________________________|
-| __________________________________________________________ |
-| |____Name___|_Cost_|Price|Re.point|Re.amount|_Temp._|____| |
-| |___rice____|___2__|__3__|___225__|___300___|_______|__|X| |
-| |___beans___|___4__|__6__|___450__|___525___|_______|__|X| |
-| |___pasta___|___3__|__4__|___125__|___250___|_______|__|X| |
-| |_biscuits__|___2__|__5__|___350__|___575___|_______|__|X| |
-| |___nuts____|___5__|__9__|___125__|___250___|_______|__|X| |
-| |___chips___|___2__|__4__|___125__|___220___|_______|__| | |
-| |_chocolate_|___5__|__5__|___250__|___375___|_______|__| | |
-| |___bread___|___2__|__3__|___125__|___200___|_______|__| | |
-| |_mushrooms_|___2__|__2__|___200__|___325___|___10__|__| | |
-| |__tomatoes_|___1__|__2__|___325__|___400___|___10__|__|_| |
-| ________________________ ____________________              |
+|                                                            |
+| Inventory:                           Capital: $100'000.00  |
+|  ________________________________________________________  |
+| |____Name___|Amount|Cost|Price|Re.point|Re.amount|Temp.|^| |
+| |___rice____|__200_|__2_|__3__|___225__|___300___|_____|X| |
+| |___beans___|__200_|__4_|__6__|___450__|___525___|_____|X| |
+| |___pasta___|__200_|__3_|__4__|___125__|___250___|_____|X| |
+| |_biscuits__|__200_|__2_|__5__|___350__|___575___|_____|X| |
+| |___nuts____|__200_|__5_|__9__|___125__|___250___|_____|X| |
+| |___chips___|__200_|__2_|__4__|___125__|___220___|_____| | |
+| |_chocolate_|__200_|__5_|__5__|___250__|___375___|_____| | |
+| |___bread___|__200_|__2_|__3__|___125__|___200___|_____| | |
+| |_mushrooms_|__200_|__2_|__2__|___200__|___325___|__10_| | |
+| |__tomatoes_|__200_|__1_|__2__|___325__|___400___|__10_|v| |
+|  ______________________   __________________               |
 | | Load item properties | | Import sales log |              |
 | |______________________| |__________________|              |
-| ___________________ ___________________                    |
+|  _________________   _________________                     |
 | | Export manifest | | Import manifest |                    |
 | |_________________| |_________________|                    |
 |____________________________________________________________|
+
+When Amount < Re.point: show amount in red text
+Load item properties: Open File browser (.csv)
+Import sales log: Open File browser (.csv)
+Import manifest: Open File browser (.csv)
+Export manifest: Open File browser (save to .csv)
 
 -----
 
 Example:
 
-Item item1 = new Item("Rice", 2, 3, 225, 300);
+Item item1 = new Item("rice", 2, 3, 225, 300);
 Stock stock1 = new Stock();
 stock1.addItems(item1, 100);
 Truck truck1 = new OrdinaryTruck(stock1);
@@ -176,6 +183,27 @@ manifest1.addTruck(truck1);
 Store store = Store.getInstance();
 store.setName("My store");
 store.importManifest(manifest1);
+
+CSVHandler csv = CSVHandler.getInstance();
+
+// load item properties
+Stock prop = csv.readItemProperties("itemprop.csv");
+store.loadInventory(prop);
+// then update values in GUI
+
+// export manifest
+Manifest manifest = store.exportManifest();
+csv.writeManifest("manifest.csv", manifest);
+
+// import manifest when trucks arrive
+Manifest manifestReturn = csv.readManifest("manifest.csv");
+store.importManifest(manifestReturn);
+// then update values in GUI
+
+// import sales log
+Stock log = csv.readSalesLog("saleslog.csv");
+store.importSalesLog(log);
+// then update values in GUI
 
 Test driven development
 not red, green, refactor

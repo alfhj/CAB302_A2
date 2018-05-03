@@ -15,8 +15,8 @@ public class ItemTest {
 	
 	Item item;
 
-	@Before
-	public void setUp() throws StockException {
+	@Before @Test
+	public void setUpItem() throws StockException {
 		item = null;
 	}
 
