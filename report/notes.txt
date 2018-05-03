@@ -45,6 +45,7 @@ A collection of Items. A HashMap is chosen to keep track of the included items a
 
 Edge cases:
 The amount to be added is negative
+The amount to be removed is negative
 The item to be removed is not in stock
 The amount to be removed is more than is available in stock
 All of one item is removed -> set amount to 0 (don't delete item)
@@ -54,8 +55,6 @@ Fields:
 + void addItems(Item item, int amount)
 + void removeItems(Item item, int amount) throws StockException
 + Map<Item, Integer> getStock() = new Stock() -> addItems...
-
-Remove 1 itemn
 
 ---
 
@@ -69,7 +68,7 @@ If refrigerated, cargo contains items with lower temperature than truck's temper
 Fields:
 -	int capacity
 -	Stock cargo
-A+ double getCost()
++A double getCost()
 + int getCapacity()
 + Stock getCargo()
 
@@ -128,13 +127,13 @@ Fields:
 
 ---
 
-Class (singleton): CSVHandler
-+ String readCSV(File file)
-+ void writeCSV(File file, String output)
-+ Stock readItemProperties(File file)
-+ Stock readSalesLog(File file)
-+ Manifest readManifest(File file)
-+ void writeManifest(File file, Manifest output)
+Class (static): CSVHandler
++S String readCSV(File file)
++S void writeCSV(File file, String output)
++S Stock readItemProperties(File file)
++S Stock readSalesLog(File file)
++S Manifest readManifest(File file)
++S void writeManifest(File file, Manifest output)
 
 -----
 
