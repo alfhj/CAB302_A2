@@ -1,15 +1,13 @@
 Larysa:
 Item
 Manifest
+Truck
 Exceptions
 
 Alf:
 Stock
-Truck
-CSVHandler
-
-Both:
 Store
+CSVHandler
 
 ---
 
@@ -103,12 +101,19 @@ Fields:
 + void addTruck(Truck truck)
 + Set<Truck> getFleet()
 + double getTotalCost()
++ Set<Truck> getTrucks() unmodifiableSet
 
 ---
 
 Class (singleton): Store
 Singleton pattern, as there is only one store.
 Approach to generating manifests: If needed items contains a refrigerated item, create a truck with temperature equal to the lowest temperature of the needed items. Fill the truck with the lowest temperature items. If it gets full, create a new truck depending on the temperature of the remainding items. Repeat.
+Methods:
+getCapital(): return capital
+getInventory(): return inventory
+getName(): return name
+loadInventory(Stock items): initializes the store's inventory based on the Stock items. Originally read from item properties csv.
+exportManifest(): checks which items needs to be reordered (quantity < reorder point). Then makes a new manifest based on these items.
 
 Edge cases:
 
@@ -124,6 +129,30 @@ Fields:
 + void importSalesLog(Stock sales)
 + void importManifest(Manifest manifest)
 + Manifest exportManifest()
+
+Item item1 = new Item("rice", 1, 2, 3, 4);
+Item item2 = new Item("ice", 1, 2, 3, 4, -20);
+
+Stock inventoryStore = new Stock();
+inventoryStore.addItems(item1, 0);
+inventoryStore.addItems(item2, 0);
+
+Stock inventoryTruck = new Stock();
+inventoryTruck.addItems(item1, 4);
+inventoryTruck.addItems(item2, 4);
+Manifest manifestCorrect = new Manifest();
+Truck truck1 = new RefrigeratedTruck(inventoryTruck, -20);
+manifestCorrect.addTruck(truck1);
+
+Store store1 = new Store();
+store1.loadInventory(inventoryStore);
+Manifest manifestStore store1.exportManifest();
+
+assertEquals(manifestCorrect, manifestStore);
+
+
+
+
 
 ---
 
