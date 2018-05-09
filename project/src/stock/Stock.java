@@ -1,5 +1,6 @@
 package stock;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,7 +18,7 @@ public class Stock {
 	}
 	
 	public Map<Item, Integer> getStock() {
-		return stock;
+		return Collections.unmodifiableMap(stock);
 	}
 
 	public void addItems(Item item, int amount) throws StockException {
