@@ -17,7 +17,7 @@ public class Stock {
 		stock = new HashMap<Item, Integer>();
 	}
 	
-	public Map<Item, Integer> getStock() {
+	public Map<Item, Integer> getItems() {
 		return Collections.unmodifiableMap(stock);
 	}
 

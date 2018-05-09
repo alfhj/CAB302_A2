@@ -1,13 +1,10 @@
-package tests;
+package stock;
 
 import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
-import stock.Item;
-import stock.Stock;
-import stock.StockException;
 
 /**
  * 
@@ -30,7 +27,7 @@ public class StockTest {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 15);
 		result.put(item1, 15);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 	@Test
@@ -38,7 +35,7 @@ public class StockTest {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 0);
 		result.put(item1, 0);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 	@Test (expected = StockException.class)
@@ -62,7 +59,7 @@ public class StockTest {
 		stock.removeItems(item1, 1);
 		}
 		result.put(item1, 5);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 	@Test (expected = StockException.class)
@@ -88,7 +85,7 @@ public class StockTest {
 		stock.addItems(item1, 15);
 		stock.removeItems(item1, 2);
 		result.put(item1, 13);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 	@Test
@@ -97,7 +94,7 @@ public class StockTest {
 		stock.addItems(item1, 15);
 		stock.removeItems(item1, 15);
 		result.put(item1, 0);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 	@Test 
@@ -106,7 +103,7 @@ public class StockTest {
 		stock.addItems(item1, 15);
 		stock.addItems(item1, 20);
 		result.put(item1, 35);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 	@Test 
@@ -120,7 +117,7 @@ public class StockTest {
 		result.put(item1, 15);
 		result.put(item2, 2);
 		result.put(item3, 8);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 	@Test (expected = StockException.class)
@@ -136,7 +133,7 @@ public class StockTest {
 		stock.addItems(item1, 15);
 		stock.removeItems(item1, 0);
 		result.put(item1, 15);
-		assertEquals(result, stock.getStock());
+		assertEquals(result, stock.getItems());
 	}
 	
 }

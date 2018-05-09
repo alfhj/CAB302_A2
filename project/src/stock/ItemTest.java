@@ -1,10 +1,8 @@
-package tests;
+package stock;
 
 import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
-import stock.Item;
-import stock.StockException;
 
 /**
  * 
@@ -120,13 +118,25 @@ public class ItemTest {
 		assertNull(item.getTemperature());
 	}
 	
-	@Test (expected = StockException.class)
-	public void testCrazyTemperature1() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, 150);
+	@Test
+	public void testHighTemperature() throws StockException {
+		item = new Item("rice", 2, 3, 225, 300, 30);
+		assertEquals(new Integer(30), item.getTemperature());
 	}
 	
-	@Test (expected = StockException.class) 
-	public void testCrazyTemperature2() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, -150);
+	@Test (expected = StockException.class)
+	public void testTooHighTemperature() throws StockException {
+		item = new Item("rice", 2, 3, 225, 300, 31);
+	}
+	
+	@Test
+	public void testLowTemperature() throws StockException {
+		item = new Item("rice", 2, 3, 225, 300, -30);
+		assertEquals(new Integer(-30), item.getTemperature());
+	}
+	
+	@Test (expected = StockException.class)
+	public void testTooLowTemperature() throws StockException {
+		item = new Item("rice", 2, 3, 225, 300, -31);
 	}
 }

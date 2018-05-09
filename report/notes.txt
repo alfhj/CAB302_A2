@@ -49,10 +49,10 @@ The amount to be removed is more than is available in stock
 All of one item is removed -> set amount to 0 (don't delete item)
 
 Fields:
--	Map<Item, Integer> stock
+-	Map<Item, Integer> items
 + void addItems(Item item, int amount)
 + void removeItems(Item item, int amount) throws StockException
-+ Map<Item, Integer> getStock() = new Stock() -> addItems...
++ Map<Item, Integer> getItems()  unmodifiableMap
 
 ---
 
@@ -62,6 +62,7 @@ An abstract class for trucks. The constructor (no access modifier) takes two arg
 Edge cases:
 Cargo contains more items than the truck's capacity
 If refrigerated, cargo contains items with lower temperature than truck's temperature
+Refrigerated truck has very high/low temperature
 
 Fields:
 -	int capacity
@@ -81,7 +82,7 @@ Fields:
 ---
 
 Class: RefrigeratedTruck extends Truck
-A refrigerated truck. The constructor takes a cargo and a temperature and sets capacity to 800. The truck's temperature should be equal to the lowest temperature of the items. Costs between about $1000 and $1500
+A refrigerated truck. The constructor takes a cargo and a temperature and sets capacity to 800. The truck's temperature should be equal to the lowest temperature of the items. Costs between around $1000 and $1500
 
 Fields:
 -	int temperature
@@ -99,9 +100,8 @@ Fleet is empty when calculating total cost
 Fields:
 -	Set<Truck> fleet
 + void addTruck(Truck truck)
-+ Set<Truck> getFleet()
++ Set<Truck> getFleet() unmodifiableSet
 + double getTotalCost()
-+ Set<Truck> getTrucks() unmodifiableSet
 
 ---
 
