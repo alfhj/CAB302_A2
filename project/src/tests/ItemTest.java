@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import stock.Item;
+import stock.StockException;
 
 /**
  * 
@@ -15,12 +16,17 @@ public class ItemTest {
 	Item item;
 
 	@Before @Test
-	public void setUpItem() throws StockException {
+	public void setUpItem() {
 		item = null;
+	}
+	
+	@Test
+	public void testConstructor() throws StockException {
+		item = new Item("rice", 2, 3, 225, 300);
 	}
 
 	@Test
-	public void testGetName() {
+	public void testGetName() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300);
 		assertEquals("rice", item.getName());
 	}
@@ -31,7 +37,7 @@ public class ItemTest {
 	}
 	
 	@Test
-	public void testGetCost() {
+	public void testGetCost() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300);
 		assertEquals(2, item.getCost());
 	}
@@ -48,7 +54,7 @@ public class ItemTest {
 	}
 	
 	@Test
-	public void testGetPrice() {
+	public void testGetPrice() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300);
 		assertEquals(3, item.getPrice());
 	}
@@ -64,24 +70,24 @@ public class ItemTest {
 	}
 	
 	@Test
-	public void testGetReorderPoint() {
+	public void testGetReorderPoint() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300);
 		assertEquals(225, item.getReorderPoint());
 	}
 	
 	@Test (expected = StockException.class)
 	public void testNegativeReorderPoint() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300);
+		item = new Item("rice", 2, 3, -225, 300);
 	}
 	
 	@Test
-	public void testZeroReorderPoint() {
+	public void testZeroReorderPoint() throws StockException {
 		item = new Item("rice", 2, 3, 0, 300);
 		assertEquals(0, item.getReorderPoint());
 	}
 
 	@Test
-	public void testGetReorderAmount() {
+	public void testGetReorderAmount() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300);
 		assertEquals(300, item.getReorderAmount());
 	}
@@ -97,19 +103,19 @@ public class ItemTest {
 	}
 	
 	@Test
-	public void testGetTemperaturePositive() {
+	public void testGetTemperaturePositive() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300, 20);
-		assertEquals(-20, item.getTemperature());
+		assertEquals(new Integer(20), item.getTemperature());
 	}
 	
 	@Test
-	public void testGetTemperatureNegative() {
+	public void testGetTemperatureNegative() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300, -20);
-		assertEquals(-20, item.getTemperature());
+		assertEquals(new Integer(-20), item.getTemperature());
 	}
 	
 	@Test
-	public void testNoTemperature() {
+	public void testNoTemperature() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300);
 		assertNull(item.getTemperature());
 	}
@@ -119,7 +125,7 @@ public class ItemTest {
 		item = new Item("rice", 2, 3, 225, 300, 150);
 	}
 	
-	@Test (expected = StockException.class)
+	@Test (expected = StockException.class) 
 	public void testCrazyTemperature2() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300, -150);
 	}

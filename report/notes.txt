@@ -1,11 +1,11 @@
 Larysa:
 Item
-Manifest
+Truck
 Exceptions
 
 Alf:
 Stock
-Truck
+Manifest
 CSVHandler
 
 Both:
@@ -30,7 +30,7 @@ Fields:
 -	int price
 -	int reorderPoint
 -	int reorderAmount
--	int temperature
+-	Integer temperature (can be null)
 + String getName()
 + int getCost()
 + int getPrice()
