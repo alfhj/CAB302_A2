@@ -1,16 +1,15 @@
 package tests;
 
 import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
+import stock.Item;
 
 /**
  * 
  * @author alfhj
  *
  */
-
 public class ItemTest {
 	
 	Item item;
