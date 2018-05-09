@@ -3,9 +3,18 @@ package tests;
 import static org.junit.Assert.*;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import stock.Stock;
+
+/**
+ * 
+ * @author lara09
+ *
+ */
 
 public class StockTest {
 	
@@ -14,7 +23,7 @@ public class StockTest {
 
 	@Before @Test
 	public void setUpStock() throws Exception {	
-		stock = new StockTest();
+		stock = new Stock();
 		result = new HashMap<Item, Integer>();
 	}
 
