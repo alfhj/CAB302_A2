@@ -1,8 +1,11 @@
 package stock;
 
+/**
+ * 
+ * @author lara09
+ *
+ */
 public class Item {
-
-		
 	private String name;
 	private int cost;
 	private int price;

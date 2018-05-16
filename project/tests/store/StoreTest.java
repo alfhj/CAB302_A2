@@ -7,7 +7,7 @@ import org.junit.Test;
 
 /**
  * 
- * @author alfhj
+ * @author lara09
  *
  */
 public class StoreTest {
