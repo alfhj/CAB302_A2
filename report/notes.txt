@@ -233,6 +233,9 @@ assertEquals(manifestCorrect, manifestStore);
 
 ---
 
+Remember:
+Design choices
+Inheritance vs composition
 Test driven development
 not red, green, refactor
 
