@@ -35,5 +35,13 @@ public class Stock {
 		if (newAmount < 0) throw new StockException("Cannot remove more items than is available in stock.");
 		items.put(item, newAmount);
 	}
+	
+	public int getNumItems() {
+		int sum = 0;
+		for (int amount: items.values()) {
+			sum += amount;
+		}
+		return sum;
+	}
 
 }
