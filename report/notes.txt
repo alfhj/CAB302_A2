@@ -130,30 +130,6 @@ Fields:
 + void importManifest(Manifest manifest)
 + Manifest exportManifest()
 
-Item item1 = new Item("rice", 1, 2, 3, 4);
-Item item2 = new Item("ice", 1, 2, 3, 4, -20);
-
-Stock inventoryStore = new Stock();
-inventoryStore.addItems(item1, 0);
-inventoryStore.addItems(item2, 0);
-
-Stock inventoryTruck = new Stock();
-inventoryTruck.addItems(item1, 4);
-inventoryTruck.addItems(item2, 4);
-Manifest manifestCorrect = new Manifest();
-Truck truck1 = new RefrigeratedTruck(inventoryTruck, -20);
-manifestCorrect.addTruck(truck1);
-
-Store store1 = new Store();
-store1.loadInventory(inventoryStore);
-Manifest manifestStore store1.exportManifest();
-
-assertEquals(manifestCorrect, manifestStore);
-
-
-
-
-
 ---
 
 Class (static): CSVHandler
@@ -232,6 +208,30 @@ store.importManifest(manifestReturn);
 Stock log = csv.readSalesLog("saleslog.csv");
 store.importSalesLog(log);
 // then update values in GUI
+
+---
+
+Item item1 = new Item("rice", 1, 2, 3, 4);
+Item item2 = new Item("ice", 1, 2, 3, 4, -20);
+
+Stock inventoryStore = new Stock();
+inventoryStore.addItems(item1, 0);
+inventoryStore.addItems(item2, 0);
+
+Stock inventoryTruck = new Stock();
+inventoryTruck.addItems(item1, 4);
+inventoryTruck.addItems(item2, 4);
+Manifest manifestCorrect = new Manifest();
+Truck truck1 = new RefrigeratedTruck(inventoryTruck, -20);
+manifestCorrect.addTruck(truck1);
+
+Store store1 = new Store();
+store1.loadInventory(inventoryStore);
+Manifest manifestStore store1.exportManifest();
+
+assertEquals(manifestCorrect, manifestStore);
+
+---
 
 Test driven development
 not red, green, refactor
