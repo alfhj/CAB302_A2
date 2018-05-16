@@ -23,7 +23,7 @@ public class TruckTest {
 	@Before
 	public void setUp() throws StockException {
 		item1 = new Item("corn", 1, 2, 3, 4);
-		item2 = new Item("milk", 5, 6, 7, 8, new Integer(1));
+		item2 = new Item("milk", 5, 6, 7, 8, 1);
 		cargo = new Stock();
 		cargo.addItems(item1, 20);
 		cargo.addItems(item2, 30);
@@ -36,7 +36,7 @@ public class TruckTest {
 	
 	@Test
 	public void testMakeRefrigeratedTruck() throws DeliveryException {
-		truck = new RefrigeratedTruck(cargo, 0);
+		truck = new RefrigeratedTruck(cargo);
 	}
 	
 	@Test
@@ -47,7 +47,7 @@ public class TruckTest {
 
 	@Test
 	public void testRTruckGetCapacity() throws DeliveryException {
-		truck = new RefrigeratedTruck(cargo, 0);
+		truck = new RefrigeratedTruck(cargo);
 		assertEquals(800, truck.getCapacity());
 	}
 	
@@ -59,7 +59,7 @@ public class TruckTest {
 
 	@Test
 	public void testRTruckGetCargo() throws DeliveryException {
-		truck = new RefrigeratedTruck(cargo, 0);
+		truck = new RefrigeratedTruck(cargo);
 		assertEquals(cargo.getItems(), truck.getCargo().getItems());
 	}
 	
@@ -79,20 +79,18 @@ public class TruckTest {
 	@Test
 	public void testRTruckUnderCapacity() throws DeliveryException {
 		cargo.addItems(item1, 750);
-		truck = new RefrigeratedTruck(cargo, 0);
+		truck = new RefrigeratedTruck(cargo);
 		assertEquals(cargo.getItems(), truck.getCargo().getItems());
 	}
 	
 	@Test (expected = DeliveryException.class)
 	public void testRTruckOverCapacity() throws DeliveryException {
 		cargo.addItems(item1, 751);
-		truck = new RefrigeratedTruck(cargo, 0);
+		truck = new RefrigeratedTruck(cargo);
 	}
 	
 	@Test
 	public void testRTruckGetTemperature() throws DeliveryException, StockException {
-		Item item3 = new Item("milk", 1, 2, 3, 4, 0);
-		cargo.addItems(item3, 20);
 		RefrigeratedTruck truck = new RefrigeratedTruck(cargo);
 		assertEquals(0, truck.getTemperature());
 	}
@@ -100,30 +98,34 @@ public class TruckTest {
 	@Test
 	public void testRTruckHighTemperature() throws DeliveryException, StockException {
 		Item item3 = new Item("milk", 1, 2, 3, 4, 10);
-		cargo.addItems(item3, 20);
+		cargo = new Stock();
+		cargo.addItems(item3, 100);
 		RefrigeratedTruck truck = new RefrigeratedTruck(cargo);
-		assertEquals(30, truck.getTemperature());
+		assertEquals(10, truck.getTemperature());
 	}
 	
 	@Test (expected = DeliveryException.class)
 	public void testRTruckTooHighTemperature() throws DeliveryException, StockException {
 		Item item3 = new Item("milk", 1, 2, 3, 4, 11);
-		cargo.addItems(item3, 20);
+		cargo = new Stock();
+		cargo.addItems(item3, 100);
 		truck = new RefrigeratedTruck(cargo);
 	}
 	
 	@Test
 	public void testRTruckLowTemperature() throws DeliveryException, StockException {
 		Item item3 = new Item("milk", 1, 2, 3, 4, -20);
-		cargo.addItems(item3, 20);
-		truck = new RefrigeratedTruck(cargo);
-		assertEquals(-30, truck.getTemperature());
+		cargo = new Stock();
+		cargo.addItems(item3, 100);
+		RefrigeratedTruck truck = new RefrigeratedTruck(cargo);
+		assertEquals(-20, truck.getTemperature());
 	}
 	
 	@Test (expected = DeliveryException.class)
 	public void testRTruckTooLowTemperature() throws DeliveryException, StockException {
 		Item item3 = new Item("milk", 1, 2, 3, 4, -21);
-		cargo.addItems(item3, 20);
+		cargo = new Stock();
+		cargo.addItems(item3, 100);
 		truck = new RefrigeratedTruck(cargo);
 	}
 	
