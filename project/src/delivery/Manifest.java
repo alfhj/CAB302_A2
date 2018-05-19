@@ -40,6 +40,9 @@ public class Manifest {
 		}
 		return totalCost;
 	}
-
-	
+/*
+	@Override
+	public boolean equals(Object manifest) {
+		return true;
+	}*/
 }
