@@ -29,7 +29,7 @@ public class ManifestTest {
 	public void setUpManifest() throws StockException {
 		item1 = new Item("rice", 2, 3, 225, 300);
 		item2 = new Item("nuts", 5, 9, 125, 250);
-		item3 = new Item("tomatoes", 1, 2, 325, 400, 10);
+		item3 = new Item("tomatoes", 1, 2, 325, 400, 6);
 		manifest = new Manifest();
 		trucks = new HashSet<Truck>();
 	}
@@ -103,11 +103,11 @@ public class ManifestTest {
 		Stock stock2 = new Stock();
 		stock2.addItems(item2, 10);
 		stock2.addItems(item3, 20);
-		Truck truck2 = new RefrigeratedTruck(stock1);
+		Truck truck2 = new RefrigeratedTruck(stock2);
 		
 		manifest.addTruck(truck1);
 		manifest.addTruck(truck2);
-		assertEquals(1945.5, manifest.getTotalCost(), DELTA);
+		assertEquals(1977.8609881132, manifest.getTotalCost(), DELTA);
 	}
 	
 	@Test
@@ -123,6 +123,6 @@ public class ManifestTest {
 		Stock stock1 = new Stock();
 		Truck truck1 = new RefrigeratedTruck(stock1);
 		manifest.addTruck(truck1);
-		assertEquals(1185.7142857142, manifest.getTotalCost(), DELTA);
+		assertEquals(998.0, manifest.getTotalCost(), DELTA);
 	}
 }
