@@ -12,7 +12,7 @@ CSVHandler
 ---
 
 Class: Item
-The class to store an item. It has 6 fields and 2 constructors, with and without temperature.
+The class to store an item. It has 6 fields and 2 constructors, with and without temperature. Items can have a temperature from -20 to 10 C.
 
 Edge cases:
 Name is empty
@@ -61,7 +61,6 @@ An abstract class for trucks. The constructor (no access modifier) takes two arg
 
 Edge cases:
 Cargo contains more items than the truck's capacity
-Refrigerated truck has items with temperatures over 10 or under -20
 
 Fields:
 -	int capacity
@@ -81,7 +80,7 @@ Fields:
 ---
 
 Class: RefrigeratedTruck extends Truck
-A refrigerated truck. The constructor takes a cargo and sets capacity to 800. The truck's temperature is set to be equal to the lowest temperature of the items. Costs between around $1000 and $1700
+A refrigerated truck. The constructor takes a cargo and sets capacity to 800. The truck's temperature is set to be equal to the lowest temperature of the items. Because items must have temperatures from -20 to 10 C, no further checking of the truck's temperature is necessary. Costs between around $1000 and $1700
 
 Fields:
 -	int temperature
@@ -142,8 +141,8 @@ Class (static): CSVHandler
 -----
 
 GUI:
-______________________________________________________________
-|          [store name] - Inventory management      [_][O][X]|
+ ____________________________________________________________
+|          [store name] - Inventory management      [-][O][X]|
 |____________________________________________________________|
 |                                                            |
 | Inventory:                           Capital: $100'000.00  |
