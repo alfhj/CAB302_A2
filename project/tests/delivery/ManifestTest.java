@@ -13,15 +13,18 @@ import stock.StockException;
 
 public class ManifestTest {
 
-	Item item1 = new Item("rice", 2, 3, 225, 300);
-	Item item2 = new Item("nuts", 5, 9, 125, 250);
-	Item item3 = new Item("tomatoes", 1, 2, 325, 400, 10);
+	private Item item1;
+	private Item item2;
+	private Item item3;
 	private Manifest manifest;
 	private Set<Truck> trucks;
 	private final double DELTA = 1e-5;
 	
 	@Before @Test
-	public void setUpManifest() {
+	public void setUpManifest() throws StockException {
+		item1 = new Item("rice", 2, 3, 225, 300);
+		item2 = new Item("nuts", 5, 9, 125, 250);
+		item3 = new Item("tomatoes", 1, 2, 325, 400, 10);
 		manifest = new Manifest();
 		trucks = new HashSet<Truck>();
 	}
