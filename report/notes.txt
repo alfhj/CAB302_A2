@@ -106,14 +106,24 @@ Fields:
 Class (singleton): Store
 Singleton pattern, as there is only one store.
 Approach to generating manifests: If needed items contains a refrigerated item, create a truck with temperature equal to the lowest temperature of the needed items. Fill the truck with the lowest temperature items. If it gets full, create a new truck depending on the temperature of the remainding items. Repeat.
+
 Methods:
 getCapital(): return capital
 getInventory(): return inventory
 getName(): return name
-loadInventory(Stock items): initializes the store's inventory based on the Stock items. Originally read from item properties csv.
-exportManifest(): checks which items needs to be reordered (quantity < reorder point). Then makes a new manifest based on these items.
+loadInventory(Stock items): initializes the store's inventory based on the Stock items with amount=0. Originally read from item properties csv.
+exportManifest(): checks which items needs to be reordered (quantity <= reorder point). Then makes a new manifest based on these items.
+importSalesLog(Stock sales): imports stock read from csv, decreases inventory and increases capital
+importManifest(Manifest manifest): imports manifest read from csv, increases inventory and decreases capital
 
 Edge cases:
+Ordering more items than the store can afford
+Selling more items than the store has in stock
+Manifest contains items that are not in the inventory
+Sales log contains items that are not in the inventory
+Amount of an item in a manifest is not equal to that item's reorder amount (note, one item can be distributed over several trucks)
+Item is in manifest, but item's quantity is above reorder point (no need to reorder)
+Stock in loadInventory has amount
 
 Fields:
 -	double capital
