@@ -109,15 +109,6 @@ public class TruckTest {
 		RefrigeratedTruck truck = new RefrigeratedTruck(cargo);
 		assertEquals(10, truck.getTemperature());
 	}
-
-	// 11 is too high
-	@Test (expected = DeliveryException.class)
-	public void testRTruckTooHighTemperature() throws DeliveryException, StockException {
-		Item item3 = new Item("milk", 1, 2, 3, 4, 11);
-		cargo = new Stock();
-		cargo.addItems(item3, 100);
-		truck = new RefrigeratedTruck(cargo);
-	}
 	
 	// lowest possible temperature is -20
 	@Test
@@ -128,16 +119,7 @@ public class TruckTest {
 		RefrigeratedTruck truck = new RefrigeratedTruck(cargo);
 		assertEquals(-20, truck.getTemperature());
 	}
-	
-	// -21 is too low
-	@Test (expected = DeliveryException.class)
-	public void testRTruckTooLowTemperature() throws DeliveryException, StockException {
-		Item item3 = new Item("milk", 1, 2, 3, 4, -21);
-		cargo = new Stock();
-		cargo.addItems(item3, 100);
-		truck = new RefrigeratedTruck(cargo);
-	}
-	
+
 	// if cargo contains no refrigerated items, set highest temperature
 	@Test
 	public void testROnlyUnrefrigeratedItems() throws DeliveryException, StockException {
@@ -147,7 +129,6 @@ public class TruckTest {
 		RefrigeratedTruck truck = new RefrigeratedTruck(cargo);
 		assertEquals(10, truck.getTemperature());
 	}
-	
 	
 	@Test
 	public void testOTruckGetCost() throws DeliveryException {
