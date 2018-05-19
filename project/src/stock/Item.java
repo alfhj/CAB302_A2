@@ -16,7 +16,7 @@ public class Item {
 	public Item(String name, int cost, int price, int reorderPoint, int reorderAmount, Integer temperature) throws StockException {
 		this(name, cost, price, reorderPoint, reorderAmount);
 
-		if (temperature < -30 || temperature > 30 ) {
+		if (temperature < -20 || temperature > 10 ) {
 			throw new StockException();
 		} 
 		else 

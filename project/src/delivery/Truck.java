@@ -31,5 +31,5 @@ public abstract class Truck {
 	}
 	
 	public abstract double getCost();
-		
+	
 }
