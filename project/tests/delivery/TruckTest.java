@@ -144,7 +144,7 @@ public class TruckTest {
 		Item item3 = new Item("rice", 1, 2, 3, 4);
 		cargo = new Stock();
 		cargo.addItems(item3, 100);
-		truck = new RefrigeratedTruck(cargo);
+		RefrigeratedTruck truck = new RefrigeratedTruck(cargo);
 		assertEquals(10, truck.getTemperature());
 	}
 	

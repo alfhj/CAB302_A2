@@ -102,14 +102,14 @@ public class ItemTest {
 	
 	@Test
 	public void testGetTemperaturePositive() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, 20);
-		assertEquals(new Integer(20), item.getTemperature());
+		item = new Item("rice", 2, 3, 225, 300, 5);
+		assertEquals(new Integer(5), item.getTemperature());
 	}
 	
 	@Test
 	public void testGetTemperatureNegative() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, -20);
-		assertEquals(new Integer(-20), item.getTemperature());
+		item = new Item("rice", 2, 3, 225, 300, -5);
+		assertEquals(new Integer(-5), item.getTemperature());
 	}
 	
 	@Test
@@ -120,23 +120,23 @@ public class ItemTest {
 	
 	@Test
 	public void testHighTemperature() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, 30);
-		assertEquals(new Integer(30), item.getTemperature());
+		item = new Item("rice", 2, 3, 225, 300, 10);
+		assertEquals(new Integer(10), item.getTemperature());
 	}
 	
 	@Test (expected = StockException.class)
 	public void testTooHighTemperature() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, 31);
+		item = new Item("rice", 2, 3, 225, 300, 11);
 	}
 	
 	@Test
 	public void testLowTemperature() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, -30);
-		assertEquals(new Integer(-30), item.getTemperature());
+		item = new Item("rice", 2, 3, 225, 300, -20);
+		assertEquals(new Integer(-20), item.getTemperature());
 	}
 	
 	@Test (expected = StockException.class)
 	public void testTooLowTemperature() throws StockException {
-		item = new Item("rice", 2, 3, 225, 300, -31);
+		item = new Item("rice", 2, 3, 225, 300, -21);
 	}
 }
