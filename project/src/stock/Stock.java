@@ -59,7 +59,7 @@ public class Stock {
 		if (o.getClass().equals(this.getClass())) {
 			return items.equals(this.getClass().cast(o).getItems());
 		}
-		return o.equals(this);
+		return false;
 	}
 	
 	@Override

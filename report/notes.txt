@@ -132,7 +132,6 @@ Fields:
 + double getCapital()
 + Stock getInventory()
 + String getName()
-+ void setName(String name)
 + void loadInventory(Stock items)
 + void importSalesLog(Stock sales)
 + void importManifest(Manifest manifest)

@@ -47,7 +47,7 @@ public class Manifest {
 		if (o.getClass().equals(this.getClass())) {
 			return fleet.equals(this.getClass().cast(o).getFleet());
 		}
-		return o.equals(this);
+		return false;
 	}
 	
 	@Override

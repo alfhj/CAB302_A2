@@ -37,7 +37,7 @@ public abstract class Truck {
 		if (o.getClass().equals(this.getClass())) {
 			return cargo.equals(this.getClass().cast(o).getCargo());
 		}
-		return o.equals(this);
+		return false;
 	}
 	
 	@Override
