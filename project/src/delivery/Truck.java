@@ -30,10 +30,14 @@ public abstract class Truck {
 	}
 	
 	public abstract double getCost();
+
 	
-	public boolean equals(Truck t) {
-		return cargo.equals(t.getCargo()) 
-		&& this.getClass().equals(t.getClass());
+	@Override
+	public boolean equals(Object o) {
+		if (o.getClass().equals(this.getClass())) {
+			return cargo.equals(this.getClass().cast(o).getCargo());
+		}
+		return o.equals(this);
 	}
 	
 	@Override
