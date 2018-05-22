@@ -57,7 +57,7 @@ public class Stock {
 	@Override
 	public boolean equals(Object o) {
 		if (o.getClass().equals(this.getClass())) {
-			return items.equals(((Stock) o).getItems());
+			return items.equals(this.getClass().cast(o).getItems());
 		}
 		return o.equals(this);
 	}

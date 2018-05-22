@@ -40,8 +40,14 @@ public class Manifest {
 		return totalCost;
 	}
 	
-	public boolean equals(Manifest m) {
-		return fleet.equals(m.getFleet());
+	
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o.getClass().equals(this.getClass())) {
+			return fleet.equals(this.getClass().cast(o).getFleet());
+		}
+		return o.equals(this);
 	}
 	
 	@Override
