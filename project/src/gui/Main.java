@@ -3,9 +3,13 @@ package gui;
 import stock.*;
 
 import java.util.Set;
+
+import javax.swing.SwingUtilities;
+
 import java.util.HashSet;
 
 import delivery.*;
+
 
 public class Main {
 
@@ -47,7 +51,9 @@ public class Main {
 		set2.add(truck1);
 		set2.add(truck3);
 		
-		System.out.println(manifest1.equals(manifest3));
+		SwingUtilities.invokeLater(new StoreWindow());
 	}
+	
+	
 
 }

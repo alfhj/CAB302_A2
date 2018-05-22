@@ -15,7 +15,7 @@ import stock.StockException;
 public class TruckTest {
 
 	private Truck truck;
-	private Stock cargo;
+	Stock cargo;
 	private Item item1;
 	private Item item2;
 	private final double DELTA = 1e-5;
@@ -54,13 +54,13 @@ public class TruckTest {
 	@Test
 	public void testOTruckGetCargo() throws DeliveryException {
 		truck = new OrdinaryTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 
 	@Test
 	public void testRTruckGetCargo() throws DeliveryException {
 		truck = new RefrigeratedTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 	
 	// maximum capacity is 1000
@@ -68,7 +68,7 @@ public class TruckTest {
 	public void testOTruckUnderCapacity() throws DeliveryException, StockException {
 		cargo.addItems(item1, 950);
 		truck = new OrdinaryTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 	
 	// 1000 items is too high
@@ -83,7 +83,7 @@ public class TruckTest {
 	public void testRTruckUnderCapacity() throws DeliveryException, StockException {
 		cargo.addItems(item1, 750);
 		truck = new RefrigeratedTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 	
 	// 801 items is too high
