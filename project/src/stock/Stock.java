@@ -3,6 +3,7 @@ package stock;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * 
@@ -36,12 +37,34 @@ public class Stock {
 		items.put(item, newAmount);
 	}
 	
+	public Entry<Item, Integer> findItem(String str) throws StockException {
+		for (Entry<Item, Integer> entry: items.entrySet()) {
+			if (entry.getKey().getName().equals(str)) {
+				return entry;
+			}
+		}
+		throw new StockException("Item not found in stock");
+	}
+	
 	public int getNumItems() {
 		int sum = 0;
 		for (int amount: items.values()) {
 			sum += amount;
 		}
 		return sum;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o.getClass().equals(this.getClass())) {
+			return items.equals(((Stock) o).getItems());
+		}
+		return o.equals(this);
+	}
+	
+	@Override
+	public int hashCode() {
+		return items.hashCode();
 	}
 
 }

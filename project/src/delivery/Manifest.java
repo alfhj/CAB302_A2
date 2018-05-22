@@ -24,7 +24,6 @@ public class Manifest {
 	}
 
 	public Set<Truck> getFleet() {
-		
 		return Collections.unmodifiableSet(fleet);
 	}
 
@@ -40,9 +39,13 @@ public class Manifest {
 		}
 		return totalCost;
 	}
-/*
+	
+	public boolean equals(Manifest m) {
+		return fleet.equals(m.getFleet());
+	}
+	
 	@Override
-	public boolean equals(Object manifest) {
-		return true;
-	}*/
+	public int hashCode() {
+		return fleet.hashCode();
+	}
 }

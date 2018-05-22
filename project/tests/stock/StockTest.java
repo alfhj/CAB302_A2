@@ -14,28 +14,28 @@ import org.junit.Test;
 public class StockTest {
 	
 	Stock stock;
-	Map<Item, Integer> result;
+	Stock result;
 
 	@Before @Test
-	public void setUpStock(){	
-		stock = new Stock();
-		result = new HashMap<Item, Integer>();
+	public void setUpStock() {	
+		stock = new Stock();	
+		result = new Stock();
 	}
 
 	@Test
 	public void testAddItems() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 15);
-		result.put(item1, 15);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 15);
+		assertEquals(result, stock);
 	}
 	
 	@Test
 	public void testAddZero() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 0);
-		result.put(item1, 0);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 0);
+		assertEquals(result, stock);
 	}
 	
 	@Test (expected = StockException.class)
@@ -54,21 +54,19 @@ public class StockTest {
 	public void testRemoveOneByOne() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 15);
-		for (int i = 0; i < 10; i++)
-		{
-		stock.removeItems(item1, 1);
+		for (int i = 0; i < 10; i++) {
+			stock.removeItems(item1, 1);
 		}
-		result.put(item1, 5);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 5);
+		assertEquals(result, stock);
 	}
 	
 	@Test (expected = StockException.class)
 	public void testRemoveOneByOneOver() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 5);
-		for (int i = 0; i < 10; i++)
-		{
-		stock.removeItems(item1, 1);
+		for (int i = 0; i < 10; i++) {
+			stock.removeItems(item1, 1);
 		}
 	}
 	
@@ -84,8 +82,8 @@ public class StockTest {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 15);
 		stock.removeItems(item1, 2);
-		result.put(item1, 13);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 13);
+		assertEquals(result, stock);
 	}
 	
 	@Test
@@ -93,8 +91,8 @@ public class StockTest {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 15);
 		stock.removeItems(item1, 15);
-		result.put(item1, 0);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 0);
+		assertEquals(result, stock);
 	}
 	
 	@Test 
@@ -102,8 +100,8 @@ public class StockTest {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 15);
 		stock.addItems(item1, 20);
-		result.put(item1, 35);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 35);
+		assertEquals(result, stock);
 	}
 	
 	@Test 
@@ -114,10 +112,10 @@ public class StockTest {
 		stock.addItems(item1, 15);
 		stock.addItems(item2, 2);
 		stock.addItems(item3, 8);
-		result.put(item1, 15);
-		result.put(item2, 2);
-		result.put(item3, 8);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 15);
+		result.addItems(item2, 2);
+		result.addItems(item3, 8);
+		assertEquals(result, stock);
 	}
 	
 	@Test (expected = StockException.class)
@@ -132,8 +130,8 @@ public class StockTest {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		stock.addItems(item1, 15);
 		stock.removeItems(item1, 0);
-		result.put(item1, 15);
-		assertEquals(result, stock.getItems());
+		result.addItems(item1, 15);
+		assertTrue(result.equals(stock));
 	}
 	
 }
