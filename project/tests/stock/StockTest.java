@@ -4,14 +4,8 @@ import static org.junit.Assert.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
-
 import org.junit.Before;
 import org.junit.Test;
-
-import delivery.DeliveryException;
-import delivery.Manifest;
-import delivery.OrdinaryTruck;
-import delivery.Truck;
 
 /**
  * 
@@ -182,7 +176,6 @@ public class StockTest {
 	
 	@Test
 	public void testSumItems() throws StockException {
-		
 		Item item1 = new Item("rice", 2, 3, 225, 300);
 		Item item2 = new Item("flour", 2, 3, 225, 300);
 		stock.addItems(item1, 50);

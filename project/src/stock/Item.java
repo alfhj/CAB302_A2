@@ -6,6 +6,7 @@ package stock;
  *
  */
 public class Item {
+	
 	private String name;
 	private int cost;
 	private int price;
@@ -18,9 +19,7 @@ public class Item {
 
 		if (temperature < -20 || temperature > 10 ) {
 			throw new StockException();
-		} 
-		else 
-		{
+		} else {
 			this.temperature = temperature;
 		}
 	}	
@@ -28,76 +27,58 @@ public class Item {
 	public Item(String name, int cost, int price, int reorderPoint, int reorderAmount) throws StockException {
 		if (name == "") {
 			throw new StockException();
-		} 
-		else 
-		{
+		} else {
 			this.name = name;
 		}
+		
 		if (cost < 0) {
 			throw new StockException();
-		} 
-		else 
-		{
+		} else {
 			this.cost = cost;
 		}
+		
 		if (price <= 0) {
 			throw new StockException();
-		} 
-		else 
-		{
+		} else {
 			this.price = price;
 		}
 		
 		if (reorderPoint < 0) {
 			throw new StockException();
-		} 
-		else 
-		{
+		} else {
 			this.reorderPoint = reorderPoint;
 		}
 		
-		//System.out.println(name + ", " + cost + ", " + price + ", " + reorderPoint + ", " + reorderAmount);
 		if (reorderAmount <= 0) {
 			throw new StockException();
-		} 
-		else 
-		{
-		this.reorderAmount = reorderAmount;			
+		} else {
+			this.reorderAmount = reorderAmount;			
 		}
 		
 	}
-	
 
-	
 	public String getName() {
-	
 		return name;
 	}
 
 	public int getCost() {
-		
 		return cost;
 	}
 	
 	public int getPrice() {
-		
 		return price;
 	}
 	
 	public int getReorderPoint() {
-		
 		return reorderPoint;
 	}
 	
 	public int getReorderAmount() {
-		
 		return reorderAmount;
 	}
 	
 	public Integer getTemperature() {
-		
 		return temperature;
 	}
-	
 	
 }

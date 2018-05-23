@@ -17,7 +17,6 @@ public class StoreTest {
 	Item item1;
 	Item item2;
 	Item item3;
-	private int capitalcost;
 	private final double DELTA = 1e-5;
 	
 	@Before @Test

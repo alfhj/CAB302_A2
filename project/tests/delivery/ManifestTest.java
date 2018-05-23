@@ -1,10 +1,8 @@
 package delivery;
 
 import static org.junit.Assert.*;
-
 import java.util.HashSet;
 import java.util.Set;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import stock.Item;
@@ -164,4 +162,5 @@ public class ManifestTest {
 		correctManifest.addTruck(truck1);
 		assertEquals(correctManifest.hashCode(), manifest.hashCode());
 	}
+	
 }

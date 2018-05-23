@@ -187,4 +187,5 @@ public class TruckTest {
 		
 		assertEquals(truck1.hashCode(), truck.hashCode());
 	}
+	
 }

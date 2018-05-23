@@ -15,6 +15,7 @@ import stock.StockException;
  *
  */
 public class Store {
+	
 	private static final String NAME = "Norwegian Delight";
 	private static final double STARTING_CAPITAL = 100000.0;
 	
@@ -107,6 +108,5 @@ public class Store {
 			}
 		}
 	}
-
 
 }

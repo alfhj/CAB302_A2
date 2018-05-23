@@ -139,4 +139,5 @@ public class ItemTest {
 	public void testTooLowTemperature() throws StockException {
 		item = new Item("rice", 2, 3, 225, 300, -21);
 	}
+	
 }
