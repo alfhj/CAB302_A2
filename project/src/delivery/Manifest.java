@@ -40,8 +40,6 @@ public class Manifest {
 		return totalCost;
 	}
 	
-	
-	
 	@Override
 	public boolean equals(Object o) {
 		if (o.getClass().equals(this.getClass())) {

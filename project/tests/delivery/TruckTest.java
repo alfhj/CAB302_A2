@@ -151,4 +151,40 @@ public class TruckTest {
 		truck = new RefrigeratedTruck(cargo);
 		assertEquals(1229.5283165091, truck.getCost(), DELTA);
 	}
+	
+	@Test
+	public void testEquals() throws StockException, DeliveryException {
+		truck = new OrdinaryTruck(cargo);
+		
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 20);
+		stock1.addItems(item2, 30);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		
+		assertTrue(truck.equals(truck1));
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	@Test
+	public void testEqualsFalse() throws StockException, DeliveryException {
+		cargo.addItems(item1, 50);
+		cargo.addItems(item2, 100);
+		truck = new OrdinaryTruck(cargo);
+		
+		assertFalse(truck.equals("Something else"));
+	}
+	
+	@Test
+	public void testHashcode() throws StockException, DeliveryException {
+		cargo.addItems(item1, 50);
+		cargo.addItems(item2, 100);
+		
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 50);
+		stock1.addItems(item2, 100);
+		truck = new OrdinaryTruck(stock1);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		
+		assertEquals(truck1.hashCode(), truck.hashCode());
+	}
 }
