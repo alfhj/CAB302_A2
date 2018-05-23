@@ -15,7 +15,7 @@ import stock.StockException;
 public class TruckTest {
 
 	private Truck truck;
-	private Stock cargo;
+	Stock cargo;
 	private Item item1;
 	private Item item2;
 	private final double DELTA = 1e-5;
@@ -54,13 +54,13 @@ public class TruckTest {
 	@Test
 	public void testOTruckGetCargo() throws DeliveryException {
 		truck = new OrdinaryTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 
 	@Test
 	public void testRTruckGetCargo() throws DeliveryException {
 		truck = new RefrigeratedTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 	
 	// maximum capacity is 1000
@@ -68,7 +68,7 @@ public class TruckTest {
 	public void testOTruckUnderCapacity() throws DeliveryException, StockException {
 		cargo.addItems(item1, 950);
 		truck = new OrdinaryTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 	
 	// 1000 items is too high
@@ -83,7 +83,7 @@ public class TruckTest {
 	public void testRTruckUnderCapacity() throws DeliveryException, StockException {
 		cargo.addItems(item1, 750);
 		truck = new RefrigeratedTruck(cargo);
-		assertEquals(cargo.getItems(), truck.getCargo().getItems());
+		assertEquals(cargo, truck.getCargo());
 	}
 	
 	// 801 items is too high
@@ -150,5 +150,41 @@ public class TruckTest {
 		cargo.addItems(item3, 20);
 		truck = new RefrigeratedTruck(cargo);
 		assertEquals(1229.5283165091, truck.getCost(), DELTA);
+	}
+	
+	@Test
+	public void testEquals() throws StockException, DeliveryException {
+		truck = new OrdinaryTruck(cargo);
+		
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 20);
+		stock1.addItems(item2, 30);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		
+		assertTrue(truck.equals(truck1));
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	@Test
+	public void testEqualsFalse() throws StockException, DeliveryException {
+		cargo.addItems(item1, 50);
+		cargo.addItems(item2, 100);
+		truck = new OrdinaryTruck(cargo);
+		
+		assertFalse(truck.equals("Something else"));
+	}
+	
+	@Test
+	public void testHashcode() throws StockException, DeliveryException {
+		cargo.addItems(item1, 50);
+		cargo.addItems(item2, 100);
+		
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 50);
+		stock1.addItems(item2, 100);
+		truck = new OrdinaryTruck(stock1);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		
+		assertEquals(truck1.hashCode(), truck.hashCode());
 	}
 }

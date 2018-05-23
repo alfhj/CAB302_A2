@@ -64,7 +64,7 @@ public class ManifestTest {
 		trucks.add(truck2);
 		assertEquals(trucks, manifest.getFleet());
 	}
-
+	
 	// Set from getFleet() should not be modifiable
 	@Test (expected = UnsupportedOperationException.class)
 	public void testGetFleetModify() throws StockException, DeliveryException {
@@ -124,5 +124,44 @@ public class ManifestTest {
 		Truck truck1 = new RefrigeratedTruck(stock1);
 		manifest.addTruck(truck1);
 		assertEquals(998.0, manifest.getTotalCost(), DELTA);
+	}
+	
+	@Test
+	public void testEquals() throws StockException, DeliveryException {
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 50);
+		stock1.addItems(item2, 100);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		
+		
+		manifest.addTruck(truck1);
+		Manifest correctManifest = new Manifest();
+		correctManifest.addTruck(truck1);
+		assertTrue(manifest.equals(correctManifest));
+	}
+	
+	@SuppressWarnings("unlikely-arg-type")
+	@Test
+	public void testEqualsFalse() throws StockException, DeliveryException {
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 50);
+		stock1.addItems(item2, 100);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		
+		manifest.addTruck(truck1);
+		assertFalse(manifest.equals("Something else"));
+	}
+	
+	@Test
+	public void testHashcode() throws StockException, DeliveryException {
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 50);
+		stock1.addItems(item2, 100);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		
+		manifest.addTruck(truck1);
+		Manifest correctManifest = new Manifest();
+		correctManifest.addTruck(truck1);
+		assertEquals(correctManifest.hashCode(), manifest.hashCode());
 	}
 }

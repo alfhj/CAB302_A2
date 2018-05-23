@@ -1,6 +1,5 @@
 package delivery;
 
-import stock.Item;
 import stock.Stock;
 
 /**
@@ -31,5 +30,19 @@ public abstract class Truck {
 	}
 	
 	public abstract double getCost();
+
+	
+	@Override
+	public boolean equals(Object o) {
+		if (o.getClass().equals(this.getClass())) {
+			return cargo.equals(this.getClass().cast(o).getCargo());
+		}
+		return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return cargo.hashCode();
+	}
 	
 }
