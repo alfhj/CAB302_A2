@@ -9,6 +9,7 @@ import stock.Stock;
  *
  */
 public class RefrigeratedTruck extends Truck {
+	
 	private int temperature;
 	
 	public RefrigeratedTruck(Stock cargo) throws DeliveryException {
@@ -25,14 +26,12 @@ public class RefrigeratedTruck extends Truck {
 		this.temperature = minTemp;
 	}
 	
-	public int getTemperature()
-	{
+	public int getTemperature() {
 		return temperature;
 	}
 	
 	@Override
-	public double getCost()
-	{
+	public double getCost() {
 		return 900.0 + 200.0 * Math.pow(0.7, (double) temperature / 5.0);
 	}
 }

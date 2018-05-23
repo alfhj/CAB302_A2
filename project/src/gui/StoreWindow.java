@@ -2,12 +2,14 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Random;
-
 import javax.swing.*;
-
 import store.Store;
 
+/**
+ * 
+ * @author alfhj
+ *
+ */
 public class StoreWindow implements ActionListener, Runnable {
 	/*
  ____________________________________________________________

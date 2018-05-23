@@ -7,16 +7,12 @@ package stock;
  */
 public class StockException extends Exception {
 
-	public StockException() {
-		// TODO Auto-generated constructor stub
-	}
+	private static final long serialVersionUID = -9223045145821745107L;
+
+	public StockException() {}
 
 	public StockException(String arg0) {
 		super(arg0);
-		// TODO Auto-generated constructor stub
 	}
-
-	
-
 
 }

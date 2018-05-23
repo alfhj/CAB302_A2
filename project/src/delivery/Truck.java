@@ -8,6 +8,7 @@ import stock.Stock;
  *
  */
 public abstract class Truck {
+	
 	private int capacity;
 	private Stock cargo;
 	
@@ -15,8 +16,7 @@ public abstract class Truck {
 		this.cargo = cargo;
 		this.capacity = capacity;
 		
-		if (cargo.getNumItems() > capacity)
-		{
+		if (cargo.getNumItems() > capacity) {
 			throw new DeliveryException();
 		}
 	}
@@ -31,7 +31,6 @@ public abstract class Truck {
 	
 	public abstract double getCost();
 
-	
 	@Override
 	public boolean equals(Object o) {
 		if (o.getClass().equals(this.getClass())) {

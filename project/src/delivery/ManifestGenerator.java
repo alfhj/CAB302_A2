@@ -4,7 +4,6 @@ import java.util.Comparator;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
-
 import stock.Item;
 import stock.Stock;
 import stock.StockException;
@@ -59,4 +58,5 @@ public class ManifestGenerator {
 		
 		return manifest;
 	}
+	
 }

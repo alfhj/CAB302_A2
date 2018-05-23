@@ -6,16 +6,13 @@ package csv;
  *
  */
 public class CSVFormatException extends Exception {
+	
+	private static final long serialVersionUID = 3007998190541244414L;
 
-	public CSVFormatException() {
-		// TODO Auto-generated constructor stub
-	}
+	public CSVFormatException() {}
 
 	public CSVFormatException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
-
-	
 
 }

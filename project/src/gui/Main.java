@@ -1,21 +1,10 @@
 package gui;
 
 import stock.*;
-import store.Store;
-
 import java.util.Set;
-
 import javax.swing.SwingUtilities;
-
-import csv.CSVFormatException;
-import csv.CSVHandler;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.HashSet;
-
 import delivery.*;
-
 
 public class Main {
 
@@ -76,4 +65,5 @@ public class Main {
 			System.out.println(truck.getCargo().getItems());
 		}*/
 	}
+	
 }

@@ -7,14 +7,12 @@ package delivery;
  */
 public class DeliveryException extends Exception {
 
-	public DeliveryException() {
-		// TODO Auto-generated constructor stub
-	}
+	private static final long serialVersionUID = -5855216767087298707L;
+
+	public DeliveryException() {}
 
 	public DeliveryException(String message) {
 		super(message);
-		// TODO Auto-generated constructor stub
 	}
-
 
 }
