@@ -6,13 +6,15 @@ import java.util.Random;
 
 import javax.swing.*;
 
+import store.Store;
+
 public class StoreWindow implements ActionListener, Runnable {
 	/*
  ____________________________________________________________
 |          [store name] - Inventory management      [-][O][X]|
 |____________________________________________________________|
 |                                                            |
-| Inventory:                           Capital: $100'000.00  |
+| Inventory:                           Capital: $100,000.00  |
 |  ________________________________________________________  |
 | |____Name___|Amount|Cost|Price|Re.point|Re.amount|Temp.|^| |
 | |___rice____|__200_|__2_|__3__|___225__|___300___|_____|X| |
@@ -33,16 +35,20 @@ public class StoreWindow implements ActionListener, Runnable {
 | |_________________| |_________________|                    |
 |____________________________________________________________|
 	 */
+	private Store store = Store.getInstance();
+	JButton btn1;
+	JButton btn2;
+	JButton btn3;
+	JButton btn4;
 	
 	public StoreWindow() throws HeadlessException {}
 	
 	private void setUp() {
+		
 		// make the top level container
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		//Store store = Store.getInstance();
-		//frame = new JFrame(store.getName());
 		JFrame frame;
-		frame = new JFrame("[store name]" + " - Inventory management");
+		frame = new JFrame(store.getName() + " - Inventory management");
 		frame.setSize(500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -55,13 +61,14 @@ public class StoreWindow implements ActionListener, Runnable {
 		Font font = new Font("sans", Font.BOLD, 16);
 		JLabel labInv = new JLabel("Inventory:");
 		labInv.setFont(font);
-		JLabel labCap = new JLabel("Capital: $100'000.00", SwingConstants.RIGHT);
+		String capitalFormatted = String.format("%,.2f", store.getCapital());
+		JLabel labCap = new JLabel("Capital: $" + capitalFormatted, SwingConstants.RIGHT);
 		labCap.setFont(font);
 		JTable table = new JTable();
-		JButton btn1 = new JButton("Load item properties");
-		JButton btn2 = new JButton("Import sales log");
-		JButton btn3 = new JButton("Export manifest");
-		JButton btn4 = new JButton("Import manifest");
+		btn1 = new JButton("Load item properties");
+		btn2 = new JButton("Import sales log");
+		btn3 = new JButton("Export manifest");
+		btn4 = new JButton("Import manifest");
 
 		// make gridbag constraints and set defaults
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -80,13 +87,14 @@ public class StoreWindow implements ActionListener, Runnable {
 		addToPanel(panel, btn2, constraints, 1, 2, 1, 1);
 		addToPanel(panel, btn3, constraints, 0, 3, 1, 1);
 		addToPanel(panel, btn4, constraints, 1, 3, 1, 1);
+		
+		btn1.addActionListener(this);
 
 		//panel.setBackground(new Color(new Random().nextInt()));
 		panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		frame.getContentPane().add(panel);
 		frame.repaint();
 		frame.setVisible(true);
-		
 	}
 	
 	private void addToPanel(JPanel jp,Component c, GridBagConstraints constraints, int x, int y, int w, int h) {  
@@ -96,10 +104,19 @@ public class StoreWindow implements ActionListener, Runnable {
 		constraints.gridheight = h;
 		jp.add(c, constraints);
 	}
+	
+	private void openFileChooser() {
+		JFrame frame;
+		frame = new JFrame("Open file");
+		frame.setSize(500, 300);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println(e.toString());
+		Object source = e.getSource();
+		if (source == btn1) openFileChooser();
 	}
 
 	@Override

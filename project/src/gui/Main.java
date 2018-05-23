@@ -1,11 +1,17 @@
 package gui;
 
 import stock.*;
+import store.Store;
 
 import java.util.Set;
 
 import javax.swing.SwingUtilities;
 
+import csv.CSVFormatException;
+import csv.CSVHandler;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 
 import delivery.*;
@@ -52,8 +58,22 @@ public class Main {
 		set2.add(truck3);
 		
 		SwingUtilities.invokeLater(new StoreWindow());
+		/*Manifest manifest = null;
+		try {
+			Stock inventory = CSVHandler.readItemProperties(new File("../csv/item_properties.csv"));
+			Store.getInstance().loadInventory(inventory);
+			manifest = CSVHandler.readManifest(new File("../csv/manifest.csv"));
+			CSVHandler.writeManifest(new File("../csv/manifest_copy.csv"), manifest);
+			
+		} catch (IOException | CSVFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println(manifest.getTotalCost());
+	
+		for (Truck truck: manifest.getFleet()) {
+			System.out.println(truck.getClass());
+			System.out.println(truck.getCargo().getItems());
+		}*/
 	}
-	
-	
-
 }

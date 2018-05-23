@@ -37,7 +37,7 @@ public class Stock {
 		items.put(item, newAmount);
 	}
 	
-	public Entry<Item, Integer> findItem(String str) throws StockException {
+	public Entry<Item, Integer> searchItem(String str) throws StockException {
 		for (Entry<Item, Integer> entry: items.entrySet()) {
 			if (entry.getKey().getName().equals(str)) {
 				return entry;
