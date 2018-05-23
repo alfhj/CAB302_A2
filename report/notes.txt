@@ -1,3 +1,9 @@
+TODO:
+Serialize Store class
+Manifest factory?
+
+---
+
 Larysa:
 Item
 Manifest
@@ -132,7 +138,6 @@ Fields:
 + double getCapital()
 + Stock getInventory()
 + String getName()
-+ void setName(String name)
 + void loadInventory(Stock items)
 + void importSalesLog(Stock sales)
 + void importManifest(Manifest manifest)
@@ -155,7 +160,7 @@ GUI:
 |          [store name] - Inventory management      [-][O][X]|
 |____________________________________________________________|
 |                                                            |
-| Inventory:                           Capital: $100'000.00  |
+| Inventory:                           Capital: $100,000.00  |
 |  ________________________________________________________  |
 | |____Name___|Amount|Cost|Price|Re.point|Re.amount|Temp.|^| |
 | |___rice____|__200_|__2_|__3__|___225__|___300___|_____|X| |
