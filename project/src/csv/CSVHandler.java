@@ -69,7 +69,7 @@ public final class CSVHandler {
 			String[] fields = line.split(",");
 			String name = fields[0];
 			int amount = Integer.parseInt(fields[1]);
-			Item item = Store.getInstance().getInventory().findItem(name);
+			Item item = Store.getInstance().getInventory().searchItem(name).getKey();
 			stock.addItems(item, amount);
 		}
 		return stock;
@@ -81,12 +81,11 @@ public final class CSVHandler {
 		Truck currentTruck = null;
 		for (String line: input.split("\n")) {
 			if (line.charAt(0) == '>') {
-				if (line.substring(1) == "Ordinary") {
-					Stock cargo = new Stock();
-					currentTruck = new OrdinaryTruck(cargo);
-				} else if (line.substring(1) == "Refrigerated") {
-					Stock cargo = new Stock();
-					currentTruck = new RefrigeratedTruck(cargo);
+				if (currentTruck != null) manifest.addTruck(currentTruck);
+				if (line.substring(1).equals("Ordinary")) {
+					currentTruck = new OrdinaryTruck(new Stock());
+				} else if (line.substring(1).equals("Refrigerated")) {
+					currentTruck = new RefrigeratedTruck(new Stock());
 				} else {
 					throw new CSVFormatException("Expected Ordinary or Refrigerated");
 				}
@@ -98,22 +97,25 @@ public final class CSVHandler {
 				String[] fields = line.split(",");
 				String name = fields[0];
 				int amount = Integer.parseInt(fields[1]);
-				Item item = Store.getInstance().getInventory().findItem(name);
+				Item item = Store.getInstance().getInventory().searchItem(name).getKey();
 				currentTruck.getCargo().addItems(item, amount);
 			}
 		}
+		if (currentTruck != null) manifest.addTruck(currentTruck);
+		
+		return manifest;
 	}
 	
 	public static void writeManifest(File file, Manifest manifest) throws IOException {
 		String output = "";
 		for (Truck truck: manifest.getFleet()) {
 			if (truck instanceof OrdinaryTruck) {
-				output += ">Ordinary\n";
+				output += ">Ordinary\r\n";
 			} else if (truck instanceof RefrigeratedTruck) {
-				output += ">Refrigerated\n";
+				output += ">Refrigerated\r\n";
 			}
 			for (Entry<Item, Integer> entry: truck.getCargo().getItems().entrySet()) {
-				output += entry.getKey().getName() + "," + entry.getValue() + "\n";
+				output += entry.getKey().getName() + "," + entry.getValue() + "\r\n";
 			}
 		}
 		writeCSV(file, output);
