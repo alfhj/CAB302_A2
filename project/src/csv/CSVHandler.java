@@ -6,6 +6,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Map.Entry;
+import java.util.regex.Pattern;
+
 import stock.*;
 import delivery.*;
 import store.*;
@@ -16,6 +18,8 @@ import store.*;
  *
  */
 public final class CSVHandler {
+	
+	private static Pattern csvExt = Pattern.compile("\\.[Cc][Ss][Vv]$");
 	
 	private CSVHandler() {}
 	
@@ -32,6 +36,9 @@ public final class CSVHandler {
 	}
 	
 	public static void writeCSV(File file, String output) throws IOException {
+		if (! csvExt.matcher(file.getPath()).find()) {
+			file = new File(file.getPath() + ".csv");
+		}
 		FileWriter writer = new FileWriter(file);
 		writer.write(output);
 		writer.close();
@@ -42,6 +49,7 @@ public final class CSVHandler {
 		Stock stock = new Stock();
 		for (String line: input.split("\n")) {
 			String[] fields = line.split(",");
+			if (fields.length != 5 && fields.length != 6) throw new CSVFormatException("This is not a valid item properties file");
 			String name = fields[0];
 			int cost = Integer.parseInt(fields[1]);
 			int price = Integer.parseInt(fields[2]);
@@ -55,8 +63,6 @@ public final class CSVHandler {
 				int temp = Integer.parseInt(fields[5]);
 				Item item = new Item(name, cost, price, repoint, reamount, temp);
 				stock.addItems(item, 0);
-			} else {
-				throw new CSVFormatException("Item property is of invalid length");
 			}
 		}
 		return stock;
@@ -67,6 +73,7 @@ public final class CSVHandler {
 		Stock stock = new Stock();
 		for (String line: input.split("\n")) {
 			String[] fields = line.split(",");
+			if (fields.length != 2) throw new CSVFormatException("This is not a valid sales log");
 			String name = fields[0];
 			int amount = Integer.parseInt(fields[1]);
 			Item item = Store.getInstance().getInventory().searchItem(name).getKey();
@@ -85,14 +92,14 @@ public final class CSVHandler {
 				if (line.substring(1).equals("Ordinary") || line.substring(1).equals("Refrigerated")) {
 					currentStock = new Stock();
 				} else {
-					throw new CSVFormatException("Expected Ordinary or Refrigerated");
+					throw new CSVFormatException("Expected Ordinary or Refrigerated truck");
 				}
 				continue;
 			} else {
-				if (currentStock == null) {
-					throw new CSVFormatException("Expected truck type at top of manifest");
-				}
+				// if stock is not initialised, top line is not a truck type
+				if (currentStock == null) throw new CSVFormatException("This is not a valid manifest");
 				String[] fields = line.split(",");
+				if (fields.length != 2) throw new CSVFormatException("This is not a valid manifest");
 				String name = fields[0];
 				int amount = Integer.parseInt(fields[1]);
 				Item item = Store.getInstance().getInventory().searchItem(name).getKey();

@@ -36,15 +36,16 @@ public class ManifestGenerator {
 		// makes manifest by successively filling up trucks with the lowest temperature items possible
 		Manifest manifest = new Manifest();
 		Stock currentStock = new Stock();
+		Boolean isRefrigerated = null;
 		int refrigeratedCapacity = new RefrigeratedTruck(new Stock()).getCapacity();
 		int ordinaryCapacity = new OrdinaryTruck(new Stock()).getCapacity();
-		boolean isRefrigerated = reorderStock.get(0).getKey().getTemperature() != null;
 		for (Entry<Item, Integer> entry: reorderStock) {
 			Item item = entry.getKey();
 			int stockAmount = entry.getValue();
 			if (stockAmount > item.getReorderPoint()) continue;
 			int amount = item.getReorderAmount();
 			
+			if (isRefrigerated == null) isRefrigerated = item.getTemperature() != null;
 			int truckSpace = isRefrigerated ? refrigeratedCapacity : ordinaryCapacity;
 			int availSpace = truckSpace - currentStock.getNumItems();
 			if (amount > availSpace) {
@@ -53,6 +54,7 @@ public class ManifestGenerator {
 				
 				currentStock = new Stock();
 				currentStock.addItems(item, amount - availSpace);
+				isRefrigerated = item.getTemperature() != null;
 			} else {
 				currentStock.addItems(item, amount);
 			}

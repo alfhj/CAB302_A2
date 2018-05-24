@@ -1,8 +1,9 @@
 TODO:
+Refactor
+Manifest getTotalStock
 Store debt is ok
 Should not check manifest
 Make tests more robust
-Check csv format
 
 ---
 

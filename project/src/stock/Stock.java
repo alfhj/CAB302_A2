@@ -85,7 +85,7 @@ public class Stock {
 				return entry;
 			}
 		}
-		throw new StockException("Item not found in stock");
+		throw new StockException("Item \"" + str + "\" not found in stock");
 	}
 	
 	/**

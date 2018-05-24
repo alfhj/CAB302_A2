@@ -56,7 +56,8 @@ public class Store {
 		return new Stock(inventory);
 	}
 
-	public Manifest exportManifest() throws StockException, DeliveryException {
+	public Manifest exportManifest() throws StockException, DeliveryException, StoreException {
+		if (inventory.getItems().isEmpty()) throw new StoreException("No items need reordering");
 		return ManifestGenerator.generateManifest(inventory);
 	}
 
@@ -72,12 +73,14 @@ public class Store {
 					throw new StoreException("Item is in manifest but not in store");
 				}
 				if (inventory.getItems().get(item) > item.getReorderPoint()) {
-					throw new StoreException("Item quantity is already above reorder point");
+					throw new StoreException("Item quantity for item \"" + item.getName() + "\" is already above reorder point");
 				}
 				
 				totalCargo.addItems(item, amount);
 			}
 		}
+		
+		if (totalCargo.getItems().isEmpty()) throw new StoreException("Manifest is empty");
 		
 		for (Entry<Item, Integer> entry: totalCargo.getItems().entrySet()) {
 			Item item = entry.getKey();
@@ -104,7 +107,7 @@ public class Store {
 			try {
 				inventory.removeItems(item, amount);
 			} catch (StockException e) {
-				throw new StoreException();
+				throw new StoreException("Not enough of item \"" + item.getName() + "\"");
 			}
 		}
 	}
