@@ -219,17 +219,35 @@ public class StoreWindow implements Runnable, ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			//File currentDirectory = new File(System.getProperty("user.dir"));
 			File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
-			JFileChooser fileChooser = new JFileChooser(currentDirectory);
+			// https://stackoverflow.com/a/3729157
+			JFileChooser fileChooser = new JFileChooser(currentDirectory) {
+				private static final long serialVersionUID = 1L;
+
+				@Override
+			    public void approveSelection() {
+			        File f = getSelectedFile();
+			        if (f.exists() && getDialogType() == SAVE_DIALOG){
+			            int result = JOptionPane.showConfirmDialog(this, "The file exists, overwrite?", "Existing file", JOptionPane.YES_NO_CANCEL_OPTION);
+			            switch(result){
+			                case JOptionPane.YES_OPTION:	super.approveSelection(); return;
+			                case JOptionPane.NO_OPTION:		return;
+			                case JOptionPane.CLOSED_OPTION:	return;
+			                case JOptionPane.CANCEL_OPTION:	cancelSelection(); return;
+			            }
+			        }
+			        super.approveSelection();
+			    }        
+			};
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
 			fileChooser.setAcceptAllFileFilterUsed(false);
 			fileChooser.addChoosableFileFilter(filter);
 			
 			int returnValue = -1;
 			switch(e.getActionCommand()) {
-			case "loadprop": returnValue = fileChooser.showOpenDialog(null); break;
-			case "impsales": returnValue = fileChooser.showOpenDialog(null); break;
-			case "impmani": returnValue = fileChooser.showOpenDialog(null); break;
-			case "expmani": returnValue = fileChooser.showSaveDialog(null); break;
+				case "loadprop":	returnValue = fileChooser.showOpenDialog(null); break;
+				case "impsales":	returnValue = fileChooser.showOpenDialog(null); break;
+				case "impmani":		returnValue = fileChooser.showOpenDialog(null); break;
+				case "expmani":		returnValue = fileChooser.showSaveDialog(null); break;
 			}
 			if (returnValue == JFileChooser.APPROVE_OPTION) {
 				File file = fileChooser.getSelectedFile();
@@ -240,34 +258,27 @@ public class StoreWindow implements Runnable, ActionListener {
 		private void processFile(File file, String action) {
 			try {
 				switch(action) {
-				case "loadprop":
-					store.loadInventory(CSVHandler.readItemProperties(file));
-					updateTable();
-					break;
-				case "impsales":
-					store.importSalesLog(CSVHandler.readSalesLog(file));
-					updateCapital();
-					updateTable();
-					break;
-				case "impmani":
-					store.importManifest(CSVHandler.readManifest(file));
-					updateCapital();
-					updateTable();
-					break;
-				case "expmani":
-					CSVHandler.writeManifest(file, store.exportManifest());
-					break;
+					case "loadprop":
+						store.loadInventory(CSVHandler.readItemProperties(file));
+						updateTable();
+						break;
+					case "impsales":
+						store.importSalesLog(CSVHandler.readSalesLog(file));
+						updateCapital();
+						updateTable();
+						break;
+					case "impmani":
+						store.importManifest(CSVHandler.readManifest(file));
+						updateCapital();
+						updateTable();
+						break;
+					case "expmani":
+						CSVHandler.writeManifest(file, store.exportManifest());
+						break;
 				}
-			} catch (StockException e1) {
-				e1.printStackTrace();
-			} catch (StoreException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (CSVFormatException e1) {
-				e1.printStackTrace();
-			} catch (DeliveryException e1) {
-				e1.printStackTrace();
+			} catch (IOException | CSVFormatException | StoreException | DeliveryException | StockException e) {
+				JOptionPane.showMessageDialog(null, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+				e.printStackTrace();
 			}
 		}
 			

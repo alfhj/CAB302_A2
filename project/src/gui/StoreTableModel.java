@@ -41,13 +41,13 @@ public class StoreTableModel extends AbstractTableModel {
 		Item item = entry.getKey();
 		int amount = entry.getValue();
 		switch (columnIndex) {
-		case 0: return item.getName();
-		case 1: return amount;
-		case 2: return item.getCost();
-		case 3: return item.getPrice();
-		case 4: return item.getReorderPoint();
-		case 5: return item.getReorderAmount();
-		case 6: return item.getTemperature() != null ? item.getTemperature() : "";
+			case 0: return item.getName();
+			case 1: return amount;
+			case 2: return item.getCost();
+			case 3: return item.getPrice();
+			case 4: return item.getReorderPoint();
+			case 5: return item.getReorderAmount();
+			case 6: return item.getTemperature() != null ? item.getTemperature() : "";
 		default: return "";
 		}
 	}
