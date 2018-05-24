@@ -13,7 +13,7 @@ public abstract class Truck {
 	private Stock cargo;
 	
 	public Truck(Stock cargo, int capacity) throws DeliveryException {
-		this.cargo = cargo;
+		this.cargo = new Stock(cargo);
 		this.capacity = capacity;
 		
 		if (cargo.getNumItems() > capacity) {
@@ -22,7 +22,7 @@ public abstract class Truck {
 	}
 
 	public Stock getCargo() {
-		return cargo;
+		return new Stock(cargo);
 	}
 
 	public int getCapacity() {

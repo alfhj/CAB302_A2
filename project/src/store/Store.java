@@ -53,7 +53,7 @@ public class Store {
 	}
 
 	public Stock getInventory() {
-		return inventory;
+		return new Stock(inventory);
 	}
 
 	public Manifest exportManifest() throws StockException, DeliveryException {

@@ -1,15 +1,15 @@
 package delivery;
 
+import stock.Item;
 import stock.Stock;
 
 public class TruckFactory {
 	
-	public static Truck getTruck(Integer temperature) throws DeliveryException {
-		if (temperature == null) {
-			return new OrdinaryTruck(new Stock());
-		} else {
-			return new RefrigeratedTruck(new Stock());				
+	public static Truck getTruck(Stock cargo) throws DeliveryException {
+		for (Item item: cargo.getItems().keySet()) {
+			if (item.getTemperature() != null) return new RefrigeratedTruck(cargo);	
 		}
+		return new OrdinaryTruck(cargo);
 	}
 	
 }
