@@ -2,15 +2,26 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import java.io.IOException;
+
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableCellRenderer;
+
+import csv.CSVFormatException;
+import csv.CSVHandler;
+import delivery.DeliveryException;
+import stock.StockException;
 import store.Store;
+import store.StoreException;
 
 /**
  * 
  * @author alfhj
  *
  */
-public class StoreWindow implements ActionListener, Runnable {
+public class StoreWindow implements Runnable, ActionListener {
 	/*
  ____________________________________________________________
 |          [store name] - Inventory management      [-][O][X]|
@@ -38,10 +49,12 @@ public class StoreWindow implements ActionListener, Runnable {
 |____________________________________________________________|
 	 */
 	private Store store = Store.getInstance();
-	JButton btn1;
-	JButton btn2;
-	JButton btn3;
-	JButton btn4;
+	JLabel labCap;
+	JTable table;
+	JButton btnProp;
+	JButton btnSales;
+	JButton btnExpMani;
+	JButton btnImpMani;
 	
 	public StoreWindow() throws HeadlessException {}
 	
@@ -49,8 +62,7 @@ public class StoreWindow implements ActionListener, Runnable {
 		
 		// make the top level container
 		JFrame.setDefaultLookAndFeelDecorated(true);
-		JFrame frame;
-		frame = new JFrame(store.getName() + " - Inventory management");
+		JFrame frame = new JFrame(store.getName() + " - Inventory management");
 		frame.setSize(500, 500);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -63,14 +75,37 @@ public class StoreWindow implements ActionListener, Runnable {
 		Font font = new Font("sans", Font.BOLD, 16);
 		JLabel labInv = new JLabel("Inventory:");
 		labInv.setFont(font);
-		String capitalFormatted = String.format("%,.2f", store.getCapital());
-		JLabel labCap = new JLabel("Capital: $" + capitalFormatted, SwingConstants.RIGHT);
+		labCap = new JLabel();
 		labCap.setFont(font);
-		JTable table = new JTable();
-		btn1 = new JButton("Load item properties");
-		btn2 = new JButton("Import sales log");
-		btn3 = new JButton("Export manifest");
-		btn4 = new JButton("Import manifest");
+		labCap.setHorizontalAlignment(SwingConstants.RIGHT);
+		updateCapital();
+
+		table = new JTable(new StoreTableModel());
+		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		table.setDefaultRenderer(Integer.class, centerRenderer);
+		table.getColumnModel().getColumn(1).setCellRenderer(new ReorderLabelRenderer());
+		table.getColumnModel().getColumn(0).setPreferredWidth(17);
+		table.getColumnModel().getColumn(1).setPreferredWidth(6);
+		table.getColumnModel().getColumn(2).setPreferredWidth(5);
+		table.getColumnModel().getColumn(3).setPreferredWidth(5);
+		table.getColumnModel().getColumn(4).setPreferredWidth(7);
+		table.getColumnModel().getColumn(5).setPreferredWidth(8);
+		table.getColumnModel().getColumn(6).setPreferredWidth(5);
+		updateTable();
+		
+		btnProp = new JButton("Load item properties");
+		btnSales = new JButton("Import sales log");
+		btnExpMani = new JButton("Export manifest");
+		btnImpMani = new JButton("Import manifest");
+		btnProp.setActionCommand("loadprop");
+		btnSales.setActionCommand("impsales");
+		btnExpMani.setActionCommand("expmani");
+		btnImpMani.setActionCommand("impmani");
+		btnProp.addActionListener(new ButtonListener());
+		btnSales.addActionListener(new ButtonListener());
+		btnExpMani.addActionListener(new ButtonListener());
+		btnImpMani.addActionListener(new ButtonListener());
 
 		// make gridbag constraints and set defaults
 		GridBagConstraints constraints = new GridBagConstraints();
@@ -81,17 +116,18 @@ public class StoreWindow implements ActionListener, Runnable {
 		 
 		addToPanel(panel, labInv, constraints, 0, 0, 1, 1);
 		addToPanel(panel, labCap, constraints, 1, 0, 1, 1);
+		
 		constraints.weighty = 20;
 		scrollPane.setViewportView(table);
+		table.setFillsViewportHeight(true);
 		addToPanel(panel, scrollPane, constraints, 0, 1, 2, 1);
-		constraints.weighty = 1;
-		addToPanel(panel, btn1, constraints, 0, 2, 1, 1);
-		addToPanel(panel, btn2, constraints, 1, 2, 1, 1);
-		addToPanel(panel, btn3, constraints, 0, 3, 1, 1);
-		addToPanel(panel, btn4, constraints, 1, 3, 1, 1);
 		
-		btn1.addActionListener(this);
-
+		constraints.weighty = 1;
+		addToPanel(panel, btnProp, constraints, 0, 2, 1, 1);
+		addToPanel(panel, btnSales, constraints, 1, 2, 1, 1);
+		addToPanel(panel, btnExpMani, constraints, 0, 3, 1, 1);
+		addToPanel(panel, btnImpMani, constraints, 1, 3, 1, 1);
+		
 		//panel.setBackground(new Color(new Random().nextInt()));
 		panel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		frame.getContentPane().add(panel);
@@ -107,22 +143,145 @@ public class StoreWindow implements ActionListener, Runnable {
 		jp.add(c, constraints);
 	}
 	
-	private void openFileChooser() {
-		JFrame frame;
-		frame = new JFrame("Open file");
-		frame.setSize(500, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
+	private void updateCapital() {
+		String capitalFormatted = String.format("%,.2f", store.getCapital());
+		labCap.setText("Capital: $" + capitalFormatted);
+	}
+	
+	private void updateTable() {
+		((StoreTableModel) table.getModel()).fireTableDataChanged();
+	}
+	/*
+	private void processFile(File file, String action) {
+		try {
+			switch(action) {
+			case "loadprop":
+				store.loadInventory(CSVHandler.readItemProperties(file));
+				updateTable();
+				break;
+			case "impsales":
+				store.importSalesLog(CSVHandler.readSalesLog(file));
+				updateCapital();
+				updateTable();
+				break;
+			case "impmani":
+				store.importManifest(CSVHandler.readManifest(file));
+				updateCapital();
+				updateTable();
+				break;
+			case "expmani":
+				CSVHandler.writeManifest(file, store.exportManifest());
+				break;
+			}
+		} catch (StockException e1) {
+			e1.printStackTrace();
+		} catch (StoreException e1) {
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (CSVFormatException e1) {
+			e1.printStackTrace();
+		} catch (DeliveryException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		Object source = e.getSource();
-		if (source == btn1) openFileChooser();
+		Object src = e.getSource();
+		if (src == btnProp || src == btnSales || src == btnImpMani || src == btnExpMani) {
+			//File currentDirectory = new File(System.getProperty("user.dir"));
+			File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
+			JFileChooser fileChooser = new JFileChooser(currentDirectory);
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			fileChooser.addChoosableFileFilter(filter);
+			
+			int returnValue = -1;
+			switch(e.getActionCommand()) {
+			case "loadprop": returnValue = fileChooser.showOpenDialog(null); break;
+			case "impsales": returnValue = fileChooser.showOpenDialog(null); break;
+			case "impmani": returnValue = fileChooser.showOpenDialog(null); break;
+			case "expmani": returnValue = fileChooser.showSaveDialog(null); break;
+			}
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				processFile(file, e.getActionCommand());
+			}
+		}
+		
 	}
-
+	*/
+	public class ButtonListener implements ActionListener {
+		private Store store = Store.getInstance();
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			//File currentDirectory = new File(System.getProperty("user.dir"));
+			File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
+			JFileChooser fileChooser = new JFileChooser(currentDirectory);
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
+			fileChooser.setAcceptAllFileFilterUsed(false);
+			fileChooser.addChoosableFileFilter(filter);
+			
+			int returnValue = -1;
+			switch(e.getActionCommand()) {
+			case "loadprop": returnValue = fileChooser.showOpenDialog(null); break;
+			case "impsales": returnValue = fileChooser.showOpenDialog(null); break;
+			case "impmani": returnValue = fileChooser.showOpenDialog(null); break;
+			case "expmani": returnValue = fileChooser.showSaveDialog(null); break;
+			}
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				File file = fileChooser.getSelectedFile();
+				processFile(file, e.getActionCommand());
+			}
+		}
+		
+		private void processFile(File file, String action) {
+			try {
+				switch(action) {
+				case "loadprop":
+					store.loadInventory(CSVHandler.readItemProperties(file));
+					updateTable();
+					break;
+				case "impsales":
+					store.importSalesLog(CSVHandler.readSalesLog(file));
+					updateCapital();
+					updateTable();
+					break;
+				case "impmani":
+					store.importManifest(CSVHandler.readManifest(file));
+					updateCapital();
+					updateTable();
+					break;
+				case "expmani":
+					CSVHandler.writeManifest(file, store.exportManifest());
+					break;
+				}
+			} catch (StockException e1) {
+				e1.printStackTrace();
+			} catch (StoreException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (CSVFormatException e1) {
+				e1.printStackTrace();
+			} catch (DeliveryException e1) {
+				e1.printStackTrace();
+			}
+		}
+			
+	}
+	
 	@Override
 	public void run() {
 		setUp();
 	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
