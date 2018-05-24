@@ -85,13 +85,13 @@ public class StoreWindow implements Runnable, ActionListener {
 		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		table.setDefaultRenderer(Integer.class, centerRenderer);
 		table.getColumnModel().getColumn(1).setCellRenderer(new ReorderLabelRenderer());
-		table.getColumnModel().getColumn(0).setPreferredWidth(17);
-		table.getColumnModel().getColumn(1).setPreferredWidth(6);
-		table.getColumnModel().getColumn(2).setPreferredWidth(5);
-		table.getColumnModel().getColumn(3).setPreferredWidth(5);
-		table.getColumnModel().getColumn(4).setPreferredWidth(7);
-		table.getColumnModel().getColumn(5).setPreferredWidth(8);
-		table.getColumnModel().getColumn(6).setPreferredWidth(5);
+		table.getColumnModel().getColumn(0).setPreferredWidth(170);
+		table.getColumnModel().getColumn(1).setPreferredWidth(60);
+		table.getColumnModel().getColumn(2).setPreferredWidth(50);
+		table.getColumnModel().getColumn(3).setPreferredWidth(50);
+		table.getColumnModel().getColumn(4).setPreferredWidth(70);
+		table.getColumnModel().getColumn(5).setPreferredWidth(80);
+		table.getColumnModel().getColumn(6).setPreferredWidth(50);
 		updateTable();
 		
 		btnProp = new JButton("Load item properties");

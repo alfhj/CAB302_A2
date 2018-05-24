@@ -78,30 +78,28 @@ public final class CSVHandler {
 	public static Manifest readManifest(File file) throws IOException, CSVFormatException, DeliveryException, StockException {
 		String input = readCSV(file);
 		Manifest manifest = new Manifest();
-		Truck currentTruck = null;
+		Stock currentStock = null;
 		for (String line: input.split("\n")) {
 			if (line.charAt(0) == '>') {
-				if (currentTruck != null) manifest.addTruck(currentTruck);
-				if (line.substring(1).equals("Ordinary")) {
-					currentTruck = new OrdinaryTruck(new Stock());
-				} else if (line.substring(1).equals("Refrigerated")) {
-					currentTruck = new RefrigeratedTruck(new Stock());
+				if (currentStock != null) manifest.addTruck(TruckFactory.getTruck(currentStock));
+				if (line.substring(1).equals("Ordinary") || line.substring(1).equals("Refrigerated")) {
+					currentStock = new Stock();
 				} else {
 					throw new CSVFormatException("Expected Ordinary or Refrigerated");
 				}
 				continue;
 			} else {
-				if (currentTruck == null) {
+				if (currentStock == null) {
 					throw new CSVFormatException("Expected truck type at top of manifest");
 				}
 				String[] fields = line.split(",");
 				String name = fields[0];
 				int amount = Integer.parseInt(fields[1]);
 				Item item = Store.getInstance().getInventory().searchItem(name).getKey();
-				currentTruck.getCargo().addItems(item, amount);
+				currentStock.addItems(item, amount);
 			}
 		}
-		if (currentTruck != null) manifest.addTruck(currentTruck);
+		if (currentStock != null) manifest.addTruck(TruckFactory.getTruck(currentStock));
 		
 		return manifest;
 	}

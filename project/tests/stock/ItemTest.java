@@ -62,9 +62,10 @@ public class ItemTest {
 		item = new Item("rice", 2, -3, 225, 300);
 	}
 	
-	@Test (expected = StockException.class)
+	@Test
 	public void testZeroPrice() throws StockException {
 		item = new Item("rice", 2, 0, 225, 300);
+		assertEquals(0, item.getPrice());
 	}
 	
 	@Test

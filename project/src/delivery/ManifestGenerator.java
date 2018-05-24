@@ -1,9 +1,16 @@
 package delivery;
 
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.Map.Entry;
+import java.util.Set;
+
 import stock.Item;
 import stock.Stock;
 import stock.StockException;
@@ -11,50 +18,46 @@ import stock.StockException;
 public class ManifestGenerator {
 
 	public static Manifest generateManifest(Stock stock) throws DeliveryException, StockException {
-		// creates treemap which sorts by temperature
-		SortedMap<Item, Integer> reorderStock = new TreeMap<Item, Integer>(new Comparator<Item>() {
+		// create list of entries
+		ArrayList<Entry<Item, Integer>> reorderStock = new ArrayList<Entry<Item, Integer>>(stock.getItems().entrySet());
+		
+		// sort list by item temperature
+		reorderStock.sort(new Comparator<Entry<Item, Integer>>() {
 			@Override
-			public int compare(Item item1, Item item2) {
-				Integer temp1 = item1.getTemperature();
-				Integer temp2 = item2.getTemperature();
+			public int compare(Entry<Item, Integer> entry1, Entry<Item, Integer> entry2) {
+				Integer temp1 = entry1.getKey().getTemperature();
+				Integer temp2 = entry2.getKey().getTemperature();
 				if (temp1 == null) return 1;
 				if (temp2 == null) return -1;
-				return Integer.compare(temp1, temp2);
+				return temp1.compareTo(temp2);
 			}
 		});
 		
-		// puts items that need reordering into treemap
-		for (Entry<Item, Integer> entry: stock.getItems().entrySet()) {
-			Item item = entry.getKey();
-			int amount = entry.getValue();
-			if (amount <= item.getReorderPoint()) {
-				reorderStock.put(item, item.getReorderAmount());
-			}
-		}
-		
-		// makes manifest
+		// makes manifest by successively filling up trucks with the lowest temperature items possible
 		Manifest manifest = new Manifest();
-		Truck currentTruck = null;
-		for (Entry<Item, Integer> entry: reorderStock.entrySet()) {
+		Stock currentStock = new Stock();
+		int refrigeratedCapacity = new RefrigeratedTruck(new Stock()).getCapacity();
+		int ordinaryCapacity = new OrdinaryTruck(new Stock()).getCapacity();
+		boolean isRefrigerated = reorderStock.get(0).getKey().getTemperature() != null;
+		for (Entry<Item, Integer> entry: reorderStock) {
 			Item item = entry.getKey();
-			int amount = entry.getValue();
+			int stockAmount = entry.getValue();
+			if (stockAmount > item.getReorderPoint()) continue;
+			int amount = item.getReorderAmount();
 			
-			if (currentTruck == null) {
-				currentTruck = TruckFactory.getTruck(item.getTemperature());
-			}
-			
-			int availSpace = currentTruck.getCapacity() - currentTruck.getCargo().getNumItems();
+			int truckSpace = isRefrigerated ? refrigeratedCapacity : ordinaryCapacity;
+			int availSpace = truckSpace - currentStock.getNumItems();
 			if (amount > availSpace) {
-				currentTruck.getCargo().addItems(item, availSpace);
-				manifest.addTruck(currentTruck);
+				currentStock.addItems(item, availSpace);
+				manifest.addTruck(TruckFactory.getTruck(currentStock));
 				
-				currentTruck = TruckFactory.getTruck(item.getTemperature());
-				currentTruck.getCargo().addItems(item, amount - availSpace);
+				currentStock = new Stock();
+				currentStock.addItems(item, amount - availSpace);
 			} else {
-				currentTruck.getCargo().addItems(item, amount);
+				currentStock.addItems(item, amount);
 			}
 		}
-		manifest.addTruck(currentTruck);
+		manifest.addTruck(TruckFactory.getTruck(currentStock));
 		
 		return manifest;
 	}

@@ -23,6 +23,14 @@ public class Stock {
 	public Stock() {
 		items = new HashMap<Item, Integer>();
 	}
+
+	/**
+	 * Constructs a copy of an existing Stock.
+	 * This is to protect stocks that should not be modifiable directly
+	 */
+	public Stock(Stock stock) {
+		items = new HashMap<Item, Integer>(stock.getItems());
+	}
 	
 	/**
 	 * Returns an unmodifiable version of the Map representing the items.
