@@ -21,7 +21,7 @@ import store.Store;
 public class StoreTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -907552824456549873L;
-	private String[] columnNames = new String[] {"Name", "Amount", "Cost", "Price", "Re.point", "Re.amount", "Temp."};
+	public String[] columnNames = new String[] {"Name", "Amount", "Cost", "Price", "Re.point", "Re.amount", "Temp."};
 	private Store store = Store.getInstance();
 	private ArrayList<Entry<Item, Integer>> sortedInventory;
 	
@@ -78,7 +78,7 @@ public class StoreTableModel extends AbstractTableModel {
 	/**
 	 * Checks if an item needs reordering.
 	 * 
-	 * @param row
+	 * @param row the row number of the amount column
 	 * @return true if row item's amount is less than or equal it's reorder point
 	 */
 	public boolean getReorderNeed(int row) {

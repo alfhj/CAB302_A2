@@ -17,7 +17,6 @@ public class RefrigeratedTruck extends Truck {
 	 * A constructor calculates a temperature of the truck based on the minimum temperature of the cargo
 	 * 
 	 * @param cargo
-	 * @param temperature
 	 * @throws DeliveryException if the minimum temperature for truck cannot be assigned to the truck
 	 */
 	public RefrigeratedTruck(Stock cargo) throws DeliveryException {

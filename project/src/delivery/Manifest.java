@@ -5,11 +5,15 @@ import java.util.HashSet;
 import java.util.Map.Entry;
 import java.util.Set;
 import stock.Item;
+import stock.Stock;
+import stock.StockException;
+import store.StoreException;
 
 /**
  * Represents a set of Truck objects.
  * It uses a HashSet as a data structure to contain truck and a cargo inside these trucks.
  * The HashSet is of type Set&lt;Truck&gt;.
+ * 
  * @author lara09
  *
  */
@@ -62,6 +66,18 @@ public class Manifest {
 		}
 		return totalCost;
 	}
+
+	public Stock getTotalCargo() throws StockException {
+		Stock totalCargo = new Stock();
+		for (Truck truck: fleet) {
+			for (Entry<Item, Integer> entry: truck.getCargo().getItems().entrySet()) {
+				Item item = entry.getKey();
+				int amount = entry.getValue();
+				totalCargo.addItems(item, amount);
+			}
+		}
+		return totalCargo;
+	}
 	
 	/**
 	 * 
@@ -83,4 +99,5 @@ public class Manifest {
 	public int hashCode() {
 		return fleet.hashCode();
 	}
+
 }

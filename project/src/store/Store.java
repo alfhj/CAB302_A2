@@ -110,39 +110,11 @@ public class Store {
 	 * 
 	 * @param manifest the manifest to import
 	 * @throws StockException via Stock
-	 * @throws StoreException if 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
-	 * 
+	 * @throws StoreException if manifest is empty
+	 * @throws StoreException if manifest contains item not found in store's inventory
 	 */
 	public void importManifest(Manifest manifest) throws StockException, StoreException {
-		Stock totalCargo = new Stock();
-		
-		for (Truck truck: manifest.getFleet()) {
-			for (Entry<Item, Integer> entry: truck.getCargo().getItems().entrySet()) {
-				Item item = entry.getKey();
-				int amount = entry.getValue();
-				
-				if (! inventory.getItems().containsKey(item)) {
-					throw new StoreException("Item is in manifest but not in store");
-				}
-				if (inventory.getItems().get(item) > item.getReorderPoint()) {
-					throw new StoreException("Item quantity for item \"" + item.getName() + "\" is already above reorder point");
-				}
-				
-				totalCargo.addItems(item, amount);
-			}
-		}
+		Stock totalCargo = manifest.getTotalCargo();
 		
 		if (totalCargo.getItems().isEmpty()) throw new StoreException("Manifest is empty");
 		
@@ -150,15 +122,14 @@ public class Store {
 			Item item = entry.getKey();
 			int amount = entry.getValue();
 			
-			if (amount != item.getReorderAmount()) { 
-				throw new StoreException("Amount in cargo is not reorder-amount");
+			if (! inventory.getItems().containsKey(item)) {
+				throw new StoreException("Item \"" + item.getName() + "\" is in manifest but not in store");
 			}
 			
 			inventory.addItems(item, amount);
 		}
 		
 		capital -= manifest.getTotalCost();
-		if (capital < 0) throw new StoreException("Congratulations, you are bankrupt");
 	}
 
 	/**

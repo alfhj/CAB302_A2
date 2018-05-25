@@ -8,6 +8,8 @@ import stock.Stock;
 import stock.StockException;
 
 /**
+ * Generates shipping manifests based on stocks.
+ * Optimises the cost as much as possible.
  * 
  * @author alfhj
  *

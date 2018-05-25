@@ -27,6 +27,8 @@ public class Stock {
 	/**
 	 * Constructs a copy of an existing Stock.
 	 * This is to protect stocks that should not be modifiable directly
+	 * 
+	 * @param stock the Stock object to copy
 	 */
 	public Stock(Stock stock) {
 		items = new HashMap<Item, Integer>(stock.getItems());
