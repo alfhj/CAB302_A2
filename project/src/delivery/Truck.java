@@ -51,8 +51,7 @@ public abstract class Truck {
 	public abstract double getCost();
 
 	/**
-	 * 
-	 * @return assign cargo item from a Stock class to a Truck class
+	 * Checks equality by returning the equality for the underlying Stock.
 	 */
 	@Override
 	public boolean equals(Object o) {
