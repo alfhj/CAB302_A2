@@ -4,6 +4,7 @@ import stock.Item;
 import stock.Stock;
 
 /**
+ * Constructs a refrigerated truck by using in abstract class Truck parameter cargo
  * 
  * @author lara09
  *
@@ -12,6 +13,13 @@ public class RefrigeratedTruck extends Truck {
 	
 	private int temperature;
 	
+	/**
+	 * A constructor calculates a temperature of the truck based on the minimum temperature of the cargo
+	 * 
+	 * @param cargo
+	 * @param temperature
+	 * @throws DeliveryException if the minimum temperature for truck cannot be assigned to the truck
+	 */
 	public RefrigeratedTruck(Stock cargo) throws DeliveryException {
 		super(cargo, 800);
 		
@@ -26,6 +34,10 @@ public class RefrigeratedTruck extends Truck {
 		this.temperature = minTemp;
 	}
 	
+	/**
+	 * 
+	 * @return temperature of the truck
+	 */
 	public int getTemperature() {
 		return temperature;
 	}
