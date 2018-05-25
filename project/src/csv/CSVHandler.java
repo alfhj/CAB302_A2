@@ -98,14 +98,19 @@ public final class CSVHandler {
 	}
 	
 	/**
+	 * Read a sales log file and returns a Stock containing these items with their amounts.
+	 * The Item object corresponding to the string in the csv file is found by searching in
+	 * the store's inventory using Stock.searchItem(string).
+	 * This means that the store's inventory is used as a database for possible items.
 	 * 
-	 * @param file
-	 * @return
+	 * @param file the sales log csv file
+	 * @return the Stock containing the sales log items and amounts
 	 * @throws IOException
-	 * @throws CSVFormatException
-	 * @throws StockException
+	 * @throws CSVFormatException if the csv file is not a item sales log file
+	 * @throws StockException via Stock
+	 * @throws StoreException if item string is not found in store's inventory
 	 */
-	public static Stock readSalesLog(File file) throws IOException, CSVFormatException, StockException {
+	public static Stock readSalesLog(File file) throws IOException, CSVFormatException, StockException, StoreException {
 		String input = readCSV(file);
 		Stock stock = new Stock();
 		for (String line: input.split("\n")) {
@@ -113,13 +118,30 @@ public final class CSVHandler {
 			if (fields.length != 2) throw new CSVFormatException("This is not a valid sales log");
 			String name = fields[0];
 			int amount = Integer.parseInt(fields[1]);
-			Item item = Store.getInstance().getInventory().searchItem(name).getKey();
+			Item item;
+			try {
+				item = Store.getInstance().getInventory().searchItem(name).getKey();
+			} catch (StockException e) {
+				throw new StoreException(e.getMessage());
+			}
 			stock.addItems(item, amount);
 		}
 		return stock;
 	}
 	
-	public static Manifest readManifest(File file) throws IOException, CSVFormatException, DeliveryException, StockException {
+	/**
+	 * Makes a Manifest from a manifest csv file.
+	 * Like readSalesLog, also uses the store's inventory to look up items.
+	 * 
+	 * @param file the manifest csv file to be read
+	 * @return the Manifest with the relevant trucks and their cargo
+	 * @throws IOException
+	 * @throws CSVFormatException if the csv file is not a valid manifest file
+	 * @throws DeliveryException via Truck
+	 * @throws StockException via Stock
+	 * @throws StoreException if item string is not found in store's inventory
+	 */
+	public static Manifest readManifest(File file) throws IOException, CSVFormatException, DeliveryException, StockException, StoreException {
 		String input = readCSV(file);
 		Manifest manifest = new Manifest();
 		Stock currentStock = null;
@@ -139,7 +161,12 @@ public final class CSVHandler {
 				if (fields.length != 2) throw new CSVFormatException("This is not a valid manifest");
 				String name = fields[0];
 				int amount = Integer.parseInt(fields[1]);
-				Item item = Store.getInstance().getInventory().searchItem(name).getKey();
+				Item item;
+				try {
+					item = Store.getInstance().getInventory().searchItem(name).getKey();
+				} catch (StockException e) {
+					throw new StoreException(e.getMessage());
+				}
 				currentStock.addItems(item, amount);
 			}
 		}
@@ -148,6 +175,13 @@ public final class CSVHandler {
 		return manifest;
 	}
 	
+	/**
+	 * Writes a given Manifest to a manifest csv file.
+	 * 
+	 * @param file the csv file to be written to
+	 * @param manifest the Manifest object to write
+	 * @throws IOException
+	 */
 	public static void writeManifest(File file, Manifest manifest) throws IOException {
 		String output = "";
 		for (Truck truck: manifest.getFleet()) {
