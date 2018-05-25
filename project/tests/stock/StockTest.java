@@ -134,46 +134,7 @@ public class StockTest {
 		result.put(item1, 15);
 		assertEquals(result, stock.getItems());
 	}
-	
-	@Test
-	public void testEquals() throws StockException {
-		Item item1 = new Item("rice", 2, 3, 225, 300);
-		Item item2 = new Item("flour", 2, 3, 225, 300);
-		stock.addItems(item1, 50);
-		stock.addItems(item2, 100);
-		
-		Stock stock1 = new Stock();
-		stock1.addItems(item1, 50);
-		stock1.addItems(item2, 100);
-		
-		assertTrue(stock.equals(stock1));
-	}
-	
-	@SuppressWarnings("unlikely-arg-type")
-	@Test
-	public void testEqualsFalse() throws StockException {
-		Item item1 = new Item("rice", 2, 3, 225, 300);
-		Item item2 = new Item("flour", 2, 3, 225, 300);
-		stock.addItems(item1, 50);
-		stock.addItems(item2, 100);
 
-		assertFalse(stock.equals("Something else"));
-	}
-	
-	@Test
-	public void testHashcode() throws StockException {
-		Item item1 = new Item("rice", 2, 3, 225, 300);
-		Item item2 = new Item("flour", 2, 3, 225, 300);
-		stock.addItems(item1, 50);
-		stock.addItems(item2, 100);
-
-		Stock stock1 = new Stock();
-		stock1.addItems(item1, 50);
-		stock1.addItems(item2, 100);
-		
-		assertEquals(stock1.hashCode(), stock.hashCode());
-	}
-	
 	@Test
 	public void testSumItems() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
@@ -207,6 +168,51 @@ public class StockTest {
 		stock.addItems(item2, 100);
 		stock.addItems(item3, 200);
 		stock.searchItem("milk");
+	}
+	
+	// tests the equals() method
+	// two different instances of Stock with the same contests should be equal
+	@Test
+	public void testEquals() throws StockException {
+		Item item1 = new Item("rice", 2, 3, 225, 300);
+		Item item2 = new Item("flour", 2, 3, 225, 300);
+		stock.addItems(item1, 50);
+		stock.addItems(item2, 100);
+		
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 50);
+		stock1.addItems(item2, 100);
+		
+		assertTrue(stock.equals(stock1));
+	}
+	
+	// equals() should fail if items and/or quantity differ
+	@Test
+	public void testEqualsFalse() throws StockException {
+		Item item1 = new Item("rice", 2, 3, 225, 300);
+		Item item2 = new Item("flour", 2, 3, 225, 300);
+		stock.addItems(item1, 50);
+		stock.addItems(item2, 100);
+		
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 51);
+		stock1.addItems(item2, 100);
+
+		assertFalse(stock.equals(stock1));
+	}
+	
+	// should check hashcode by passing Map hashcode
+	@Test
+	public void testHashcode() throws StockException {
+		Item item1 = new Item("rice", 2, 3, 225, 300);
+		Item item2 = new Item("flour", 2, 3, 225, 300);
+		stock.addItems(item1, 50);
+		stock.addItems(item2, 100);
+
+		result.put(item1, 50);
+		result.put(item2, 100);
+		
+		assertEquals(result.hashCode(), stock.hashCode());
 	}
 	
 }
