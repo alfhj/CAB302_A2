@@ -119,6 +119,7 @@ public class StockTest {
 		assertEquals(result, stock.getItems());
 	}
 	
+	//removing a negative amount of an item not acceptable
 	@Test (expected = StockException.class)
 	public void testRemoveNegativeValue() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
@@ -126,6 +127,7 @@ public class StockTest {
 		stock.removeItems(item1, -1);
 	}
 	
+	//check that removing a zero amount of items does not change the amount of the product
 	@Test 
 	public void testRemoveZeroValue() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
@@ -135,6 +137,7 @@ public class StockTest {
 		assertEquals(result, stock.getItems());
 	}
 
+	//check that it calculates the sum amount of product correctly
 	@Test
 	public void testSumItems() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
@@ -145,6 +148,7 @@ public class StockTest {
 		assertEquals(150, stock.getNumItems());
 	}
 	
+	//search for an item returns correct key and value
 	@Test
 	public void testSearchItem() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);
@@ -159,6 +163,7 @@ public class StockTest {
 		assertEquals(new Integer(200), searchResult.getValue());
 	}
 	
+	//search for non existing item
 	@Test (expected = StockException.class)
 	public void testSearchItemNotExist() throws StockException {
 		Item item1 = new Item("rice", 2, 3, 225, 300);

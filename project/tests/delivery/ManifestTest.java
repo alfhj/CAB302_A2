@@ -88,6 +88,48 @@ public class ManifestTest {
 	}
 	
 	@Test
+	public void testGetTotalCargo1() throws StockException, DeliveryException {
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 10);
+		stock1.addItems(item2, 20);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		manifest.addTruck(truck1);
+		
+		Stock stock2 = new Stock();
+		stock2.addItems(item2, 30);
+		stock2.addItems(item3, 40);
+		Truck truck2 = new RefrigeratedTruck(stock1);
+		manifest.addTruck(truck2);
+		
+		Stock totalStock = new Stock();
+		totalStock.addItems(item1, 10);
+		totalStock.addItems(item2, 50);
+		totalStock.addItems(item3, 40);
+		assertEquals(totalStock, manifest.getTotalCargo());
+	}
+	
+	@Test
+	public void testGetTotalCargo2() throws StockException, DeliveryException {
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 15);
+		stock1.addItems(item2, 30);
+		Truck truck1 = new OrdinaryTruck(stock1);
+		manifest.addTruck(truck1);
+		
+		Stock stock2 = new Stock();
+		stock2.addItems(item2, 50);
+		stock2.addItems(item3, 60);
+		Truck truck2 = new RefrigeratedTruck(stock1);
+		manifest.addTruck(truck2);
+		
+		Stock totalStock = new Stock();
+		totalStock.addItems(item1, 15);
+		totalStock.addItems(item2, 80);
+		totalStock.addItems(item3, 60);
+		assertEquals(totalStock, manifest.getTotalCargo());
+	}
+	
+	@Test
 	public void testGetCostSingle() throws StockException, DeliveryException {
 		Stock stock1 = new Stock();
 		stock1.addItems(item1, 50);
