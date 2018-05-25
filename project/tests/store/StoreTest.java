@@ -19,6 +19,7 @@ public class StoreTest {
 	Item item3;
 	private final double DELTA = 1e-5;
 	
+	
 	@Before @Test
 	public void setUpStore() throws StockException, StoreException {
 		store = Store.getInstance();
@@ -104,9 +105,11 @@ public class StoreTest {
 		assertEquals(correctManifest, store.exportManifest());
 	}
 	
+	//Adding items to the stock, then to the trucks, then to manifest to check the export manifest correctly
+	// Correct manifest has two possibilities because of item in a hashmap has undefined order
 	@Test
 	public void testExportManifestTwoTrucks() throws StockException, DeliveryException, StoreException {		
-		// correct manifest - two possibilities because of hashmap
+		
 		Manifest correctManifest1 = new Manifest();
 		Stock reorderStock1 = new Stock();
 		reorderStock1.addItems(item3, 400);
@@ -134,6 +137,7 @@ public class StoreTest {
 		assertTrue(store.exportManifest().equals(correctManifest1) || store.exportManifest().equals(correctManifest2));
 	}
 	
+	//Adding items to the stock, then to the trucks, then to manifest to check the iport manifest correctly
 	@Test
 	public void testImportManifest() throws StockException, DeliveryException, StoreException
 	{	
@@ -160,8 +164,9 @@ public class StoreTest {
 		assertEquals(correctInventory, store.getInventory());
 		assertEquals(96339.5, store.getCapital(), DELTA);
 	}
-	
-	@Test (expected = StoreException.class)
+
+	// no error when amount in manifest is not same as reorder amount
+	@Test
 	public void testImportManifestNotReorderAmount() throws StockException, DeliveryException, StoreException
 	{	
 		Stock reorderStock1 = new Stock();
@@ -192,25 +197,27 @@ public class StoreTest {
 		manifest.addTruck(truck);
 		store.importManifest(manifest);
 	}
-	
-	@Test (expected = StoreException.class)
+
+	// no error when item amount is above reorder point
+	@Test
 	public void testImportManifestNoNeed() throws StockException, DeliveryException, StoreException
 	{
-		store.getInventory().addItems(item1, 226);
+		Manifest manifest = store.exportManifest();
+		store.importManifest(manifest);
 		
 		Stock reorderStock = new Stock();
 		reorderStock.addItems(item1, 300);
 		OrdinaryTruck truck = new OrdinaryTruck(reorderStock);
-		Manifest manifest = new Manifest();
-		manifest.addTruck(truck);
-		store.importManifest(manifest);		
+		Manifest manifest1 = new Manifest();
+		manifest1.addTruck(truck);
+		store.importManifest(manifest1);		
 	}
 	
 	@Test
-	public void testImportSalesLog() throws StockException, StoreException
+	public void testImportSalesLog() throws StockException, StoreException, DeliveryException
 	{
-		store.getInventory().addItems(item1, 100);
-		store.getInventory().addItems(item2, 200);
+		Manifest manifest = store.exportManifest();
+		store.importManifest(manifest);
 		
 		Stock sold = new Stock();
 		sold.addItems(item1, 50);
@@ -218,12 +225,12 @@ public class StoreTest {
 		store.importSalesLog(sold);
 		
 		Stock newStock = new Stock();
-		newStock.addItems(item1, 50);
-		newStock.addItems(item2, 150);
-		newStock.addItems(item3, 0);
+		newStock.addItems(item1, 250);
+		newStock.addItems(item2, 200);
+		newStock.addItems(item3, 400);
 
 		assertEquals(newStock, store.getInventory());
-		assertEquals(100600.0, store.getCapital(), DELTA);
+		assertEquals(96532.13901188, store.getCapital(), DELTA);
 		
 	}
 	
@@ -247,7 +254,8 @@ public class StoreTest {
 		store.importSalesLog(sold);
 	}
 	
-	@Test (expected = StoreException.class)
+	// no error when bankrupt
+	@Test
 	public void testOrderItemsCostNegative() throws StockException, DeliveryException, StoreException
 	{
 		Stock reorderStock = new Stock();
