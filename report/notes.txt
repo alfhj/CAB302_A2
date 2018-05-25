@@ -1,7 +1,4 @@
 TODO:
-Should not check manifest
-Store debt is ok
-Manifest getTotalStock
 Make tests more robust
 Add comments to test cases
 Refactor
