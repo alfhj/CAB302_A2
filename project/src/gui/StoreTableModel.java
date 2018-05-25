@@ -10,13 +10,20 @@ import javax.swing.table.AbstractTableModel;
 import stock.Item;
 import store.Store;
 
+/**
+ * Model for the table. It takes data from the store's inventory.
+ * It keeps a stored version of the Stock by adding the entries to an ArrayList
+ * and sorting it each time the data is updated.
+ * 
+ * @author alfhj
+ *
+ */
 public class StoreTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -907552824456549873L;
 	private String[] columnNames = new String[] {"Name", "Amount", "Cost", "Price", "Re.point", "Re.amount", "Temp."};
-	
 	private Store store = Store.getInstance();
-	ArrayList<Entry<Item, Integer>> sortedInventory;
+	private ArrayList<Entry<Item, Integer>> sortedInventory;
 	
 	@Override
 	public int getRowCount() {
@@ -27,12 +34,14 @@ public class StoreTableModel extends AbstractTableModel {
 	public int getColumnCount() {
 		return columnNames.length;
 	}
-	
+
+	@Override
 	public String getColumnName(int col) {
 		return columnNames[col];
 	}
-	
-	public Class getColumnClass(int c) {
+
+	@Override
+	public Class<?> getColumnClass(int c) {
 		return getValueAt(0, c).getClass();
 	}
 	@Override
@@ -66,6 +75,12 @@ public class StoreTableModel extends AbstractTableModel {
 		fireTableChanged(new TableModelEvent(this, 0, Integer.MAX_VALUE));
 	}
 
+	/**
+	 * Checks if an item needs reordering.
+	 * 
+	 * @param row
+	 * @return true if row item's amount is less than or equal it's reorder point
+	 */
 	public boolean getReorderNeed(int row) {
 		Item item = sortedInventory.get(row).getKey();
 		int amount = sortedInventory.get(row).getValue();

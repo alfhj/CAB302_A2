@@ -8,6 +8,12 @@ import javax.swing.JTable;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 
+/**
+ * Renders a cell with a light red background colour if that cell's item needs reordering.
+ * 
+ * @author alfhj
+ *
+ */
 public class ReorderLabelRenderer extends DefaultTableCellRenderer {
 
 	private static final long serialVersionUID = 5267456837862656292L;

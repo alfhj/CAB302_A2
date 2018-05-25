@@ -17,11 +17,15 @@ import store.Store;
 import store.StoreException;
 
 /**
+ * Specifies the layout of the inventory management GUI.
+ * It has a table with the store's current inventory with amounts and properties.
+ * It also shows the store's current capital, and implements buttons
+ * to load item properties, import sales logs, and import and export manifests.
  * 
  * @author alfhj
  *
  */
-public class StoreWindow implements Runnable, ActionListener {
+public class StoreWindow implements Runnable {
 	/*
  ____________________________________________________________
 |          [store name] - Inventory management      [-][O][X]|
@@ -151,75 +155,25 @@ public class StoreWindow implements Runnable, ActionListener {
 	private void updateTable() {
 		((StoreTableModel) table.getModel()).fireTableDataChanged();
 	}
-	/*
-	private void processFile(File file, String action) {
-		try {
-			switch(action) {
-			case "loadprop":
-				store.loadInventory(CSVHandler.readItemProperties(file));
-				updateTable();
-				break;
-			case "impsales":
-				store.importSalesLog(CSVHandler.readSalesLog(file));
-				updateCapital();
-				updateTable();
-				break;
-			case "impmani":
-				store.importManifest(CSVHandler.readManifest(file));
-				updateCapital();
-				updateTable();
-				break;
-			case "expmani":
-				CSVHandler.writeManifest(file, store.exportManifest());
-				break;
-			}
-		} catch (StockException e1) {
-			e1.printStackTrace();
-		} catch (StoreException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		} catch (CSVFormatException e1) {
-			e1.printStackTrace();
-		} catch (DeliveryException e1) {
-			e1.printStackTrace();
-		}
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		Object src = e.getSource();
-		if (src == btnProp || src == btnSales || src == btnImpMani || src == btnExpMani) {
-			//File currentDirectory = new File(System.getProperty("user.dir"));
-			File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
-			JFileChooser fileChooser = new JFileChooser(currentDirectory);
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("CSV Files", "csv");
-			fileChooser.setAcceptAllFileFilterUsed(false);
-			fileChooser.addChoosableFileFilter(filter);
-			
-			int returnValue = -1;
-			switch(e.getActionCommand()) {
-			case "loadprop": returnValue = fileChooser.showOpenDialog(null); break;
-			case "impsales": returnValue = fileChooser.showOpenDialog(null); break;
-			case "impmani": returnValue = fileChooser.showOpenDialog(null); break;
-			case "expmani": returnValue = fileChooser.showSaveDialog(null); break;
-			}
-			if (returnValue == JFileChooser.APPROVE_OPTION) {
-				File file = fileChooser.getSelectedFile();
-				processFile(file, e.getActionCommand());
-			}
-		}
-		
-	}
-	*/
+	
+	/**
+	 * Class that responds to button presses and performs an action depending on the button's actionCommand.
+	 * It needs to be a subclass to that updateCapital and updateTable is visible.
+	 * 
+	 * @author alfhj
+	 *
+	 */
 	public class ButtonListener implements ActionListener {
 		private Store store = Store.getInstance();
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			//File currentDirectory = new File(System.getProperty("user.dir"));
-			File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
-			// https://stackoverflow.com/a/3729157
+			//File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
+			File currentDirectory = new File("H:\\git\\CAB302_A2\\csv");
+			
+			// JFileChooser with overwrite confirmation dialogue
+			// source: https://stackoverflow.com/a/3729157
 			JFileChooser fileChooser = new JFileChooser(currentDirectory) {
 				private static final long serialVersionUID = 1L;
 
@@ -255,6 +209,8 @@ public class StoreWindow implements Runnable, ActionListener {
 			}
 		}
 		
+		// process the file depending on which action is to be performed
+		// updates the relevant components
 		private void processFile(File file, String action) {
 			try {
 				switch(action) {
@@ -287,12 +243,6 @@ public class StoreWindow implements Runnable, ActionListener {
 	@Override
 	public void run() {
 		setUp();
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		
 	}
 	
 }
