@@ -1,4 +1,5 @@
 TODO:
+model public cols
 Make tests more robust
 Add comments to test cases
 Refactor
