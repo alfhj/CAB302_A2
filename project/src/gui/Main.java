@@ -23,6 +23,10 @@ public class Main {
 		Stock stock3 = new Stock();
 		stock3.addItems(item1, 10);
 		stock3.addItems(item2, 21);
+		
+
+		Stock stock4 = new Stock(stock3);
+		stock3.removeItems(item1, 5);
 
 		Truck truck1 = new OrdinaryTruck(stock1);
 		Truck truck2 = new OrdinaryTruck(stock2);
@@ -47,6 +51,7 @@ public class Main {
 		set2.add(truck3);
 		
 		SwingUtilities.invokeLater(new StoreWindow());
+		
 		/*Manifest manifest = null;
 		try {
 			Stock inventory = CSVHandler.readItemProperties(new File("../csv/item_properties.csv"));
