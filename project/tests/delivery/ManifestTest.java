@@ -98,7 +98,7 @@ public class ManifestTest {
 		Stock stock2 = new Stock();
 		stock2.addItems(item2, 30);
 		stock2.addItems(item3, 40);
-		Truck truck2 = new RefrigeratedTruck(stock1);
+		Truck truck2 = new RefrigeratedTruck(stock2);
 		manifest.addTruck(truck2);
 		
 		Stock totalStock = new Stock();
@@ -119,7 +119,7 @@ public class ManifestTest {
 		Stock stock2 = new Stock();
 		stock2.addItems(item2, 50);
 		stock2.addItems(item3, 60);
-		Truck truck2 = new RefrigeratedTruck(stock1);
+		Truck truck2 = new RefrigeratedTruck(stock2);
 		manifest.addTruck(truck2);
 		
 		Stock totalStock = new Stock();

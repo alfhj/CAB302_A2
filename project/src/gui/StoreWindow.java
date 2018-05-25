@@ -4,10 +4,12 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.Enumeration;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumn;
 
 import csv.CSVFormatException;
 import csv.CSVHandler;
@@ -85,10 +87,17 @@ public class StoreWindow implements Runnable {
 		updateCapital();
 
 		table = new JTable(new StoreTableModel());
-		DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
-		centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-		table.setDefaultRenderer(Integer.class, centerRenderer);
-		table.getColumnModel().getColumn(1).setCellRenderer(new ReorderLabelRenderer());
+		//DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+		//centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+		//table.setDefaultRenderer(Integer.class, centerRenderer);
+		//table.getColumnModel().getColumn(1).setCellRenderer(new ReorderLabelRenderer());
+		ReorderLabelRenderer renderer = new ReorderLabelRenderer();
+		Enumeration<TableColumn> cols = table.getColumnModel().getColumns();
+		while (cols.hasMoreElements()) {
+			cols.nextElement().setCellRenderer(renderer);
+		}
+		//table.getColumnModel().getColumn(1).setCellRenderer(new ReorderLabelRenderer());
+		
 		table.getColumnModel().getColumn(0).setPreferredWidth(170);
 		table.getColumnModel().getColumn(1).setPreferredWidth(60);
 		table.getColumnModel().getColumn(2).setPreferredWidth(50);

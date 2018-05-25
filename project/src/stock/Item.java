@@ -23,7 +23,7 @@ public class Item {
 	 * @param name
 	 * @param cost
 	 * @param price
-	 * @param reorderpoint
+	 * @param reorderPoint
 	 * @param reorderAmount
 	 * @param temperature
 	 * @throws StockException if a temperature is less than -20 or more than 10 degrees.
@@ -44,7 +44,7 @@ public class Item {
 	 * @param name
 	 * @param cost
 	 * @param price
-	 * @param reorderpoint
+	 * @param reorderPoint
 	 * @param reorderAmount
 	 * @throws StockException if name does not exist
 	 * @throws StockException if cost of the item is less than zero

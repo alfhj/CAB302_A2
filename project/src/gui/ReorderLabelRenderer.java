@@ -21,10 +21,18 @@ public class ReorderLabelRenderer extends DefaultTableCellRenderer {
 	@Override
 	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
 		JLabel label = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
-		label.setHorizontalAlignment(SwingConstants.CENTER);
 		
 		StoreTableModel tableModel = (StoreTableModel) table.getModel();
-		if (tableModel.getReorderNeed(row)) {
+		String colName = tableModel.getColumnName(col);
+		if (tableModel.getColumnClass(col) == String.class) {
+			label.setHorizontalAlignment(SwingConstants.LEFT);
+		} else {
+			label.setHorizontalAlignment(SwingConstants.CENTER);
+		}
+		if (colName.equals("Cost") || colName.equals("Price")) {
+			label.setText("$" + getText());
+		}
+		if (colName.equals("Amount") && tableModel.getReorderNeed(row)) {
 			label.setBackground(new Color(1.0f, 0.8f, 0.8f));
 		} else {
 			label.setBackground(table.getBackground());

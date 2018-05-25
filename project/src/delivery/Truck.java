@@ -16,7 +16,10 @@ public abstract class Truck {
 	
 	/**
 	 * Constructs a Truck with the specified parameters of cargo and capacity.
-	 * @throw Delivery exception if number of items in stock is large than a capacity of trucks 
+	 * 
+	 * @param cargo
+	 * @param capacity
+	 * @throws DeliveryException if number of items in stock is large than a capacity of trucks 
 	 */
 	public Truck(Stock cargo, int capacity) throws DeliveryException {
 		this.cargo = new Stock(cargo);
