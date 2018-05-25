@@ -13,6 +13,9 @@ import delivery.*;
 import store.*;
 
 /**
+ * Handles the reading and writing of relevant csv files.
+ * The csv are of three different formats: item properties, sales logs, and manifests
+ * Attempting to read a csv file of the wrong format will result in an exception.
  * 
  * @author alfhj
  *
@@ -23,6 +26,14 @@ public final class CSVHandler {
 	
 	private CSVHandler() {}
 	
+	/**
+	 * Reads a file using BufferedReader and returns the contents as a String.
+	 * It converts the newlines to "\n" 
+	 * 
+	 * @param file the file to be read
+	 * @return the file's content
+	 * @throws IOException
+	 */
 	public static String readCSV(File file) throws IOException {
 		FileReader reader = new FileReader(file);
 		BufferedReader bufferedReader = new BufferedReader(reader);
@@ -35,6 +46,14 @@ public final class CSVHandler {
 		return output;
 	}
 	
+	/**
+	 * Writes a String to a file by using FileWriter.
+	 * If the file's extension is not ".csv", it adds this extension to the end of the filename.
+	 * 
+	 * @param file the file to be written to
+	 * @param output the String to be written to the file
+	 * @throws IOException
+	 */
 	public static void writeCSV(File file, String output) throws IOException {
 		if (! csvExt.matcher(file.getPath()).find()) {
 			file = new File(file.getPath() + ".csv");
@@ -44,6 +63,16 @@ public final class CSVHandler {
 		writer.close();
 	}
 	
+	/**
+	 * Reads an item property csv file and returns the Stock containing
+	 * Item objects corresponding to these items. The amounts are set to 0.
+	 * 
+	 * @param file the item property csv file
+	 * @return the Stock containing the Item
+	 * @throws IOException
+	 * @throws CSVFormatException if the csv file is not a item property file
+	 * @throws StockException via Item and Stock
+	 */
 	public static Stock readItemProperties(File file) throws IOException, CSVFormatException, StockException {
 		String input = readCSV(file);
 		Stock stock = new Stock();
@@ -68,6 +97,14 @@ public final class CSVHandler {
 		return stock;
 	}
 	
+	/**
+	 * 
+	 * @param file
+	 * @return
+	 * @throws IOException
+	 * @throws CSVFormatException
+	 * @throws StockException
+	 */
 	public static Stock readSalesLog(File file) throws IOException, CSVFormatException, StockException {
 		String input = readCSV(file);
 		Stock stock = new Stock();

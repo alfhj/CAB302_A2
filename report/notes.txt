@@ -1,10 +1,13 @@
 TODO:
-Manifest getTotalStock
 Should not check manifest
 Store debt is ok
+Manifest getTotalStock
 Make tests more robust
-Refactor
 Add comments to test cases
+Refactor
+Take screenshots
+Update class diagram
+Finish report
 
 ---
 

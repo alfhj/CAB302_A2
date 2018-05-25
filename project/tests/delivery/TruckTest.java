@@ -14,12 +14,17 @@ import stock.StockException;
  */
 public class TruckTest {
 
+	// the truck to be tested
 	private Truck truck;
-	Stock cargo;
+	// the truck's cargo
+	private Stock cargo;
+	//items
 	private Item item1;
 	private Item item2;
+	// 0.00001 allowed difference between doubles
 	private final double DELTA = 1e-5;
 	
+	// initialise values before each test
 	@Before
 	public void setUp() throws StockException {
 		item1 = new Item("corn", 1, 2, 3, 4);
@@ -152,6 +157,8 @@ public class TruckTest {
 		assertEquals(1229.5283165091, truck.getCost(), DELTA);
 	}
 	
+	// tests the equals() method
+	// two different instances of Truck with the same contests should be equal 
 	@Test
 	public void testEquals() throws StockException, DeliveryException {
 		truck = new OrdinaryTruck(cargo);
@@ -163,29 +170,43 @@ public class TruckTest {
 		
 		assertTrue(truck.equals(truck1));
 	}
-	
-	@SuppressWarnings("unlikely-arg-type")
+
+	// equals() should fail if cargo differ
 	@Test
 	public void testEqualsFalse() throws StockException, DeliveryException {
-		cargo.addItems(item1, 50);
-		cargo.addItems(item2, 100);
 		truck = new OrdinaryTruck(cargo);
-		
-		assertFalse(truck.equals("Something else"));
-	}
-	
-	@Test
-	public void testHashcode() throws StockException, DeliveryException {
-		cargo.addItems(item1, 50);
-		cargo.addItems(item2, 100);
-		
+
 		Stock stock1 = new Stock();
-		stock1.addItems(item1, 50);
-		stock1.addItems(item2, 100);
-		truck = new OrdinaryTruck(stock1);
+		stock1.addItems(item1, 20);
+		stock1.addItems(item2, 31);
 		Truck truck1 = new OrdinaryTruck(stock1);
 		
-		assertEquals(truck1.hashCode(), truck.hashCode());
+		assertFalse(truck.equals(truck1));
+	}
+
+	// equals() should fail if cargo is same but truck type is different
+	@Test
+	public void testEqualsFalseDifferentTrucks() throws StockException, DeliveryException {
+		truck = new OrdinaryTruck(cargo);
+
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 20);
+		stock1.addItems(item2, 30);
+		Truck truck1 = new RefrigeratedTruck(stock1);
+		
+		assertFalse(truck.equals(truck1));
+	}
+	
+	// should check hashcode by passing Stock hashcode
+	@Test
+	public void testHashcode() throws StockException, DeliveryException {
+		truck = new OrdinaryTruck(cargo);
+		
+		Stock stock1 = new Stock();
+		stock1.addItems(item1, 20);
+		stock1.addItems(item2, 30);
+		
+		assertEquals(stock1.hashCode(), truck.hashCode());
 	}
 	
 }

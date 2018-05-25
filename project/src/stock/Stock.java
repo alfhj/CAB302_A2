@@ -101,6 +101,11 @@ public class Stock {
 		return sum;
 	}
 	
+	/**
+	 * Checks equality by returning the equality for the underlying Map.
+	 * This is not overridden in Item, which means items are compared by instance.
+	 * This means that there can only be one instance of a specific item at a time.
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (o.getClass().equals(this.getClass())) {
@@ -109,6 +114,9 @@ public class Stock {
 		return false;
 	}
 	
+	/**
+	 * Returns underlying Map's hashcode.
+	 */
 	@Override
 	public int hashCode() {
 		return items.hashCode();
