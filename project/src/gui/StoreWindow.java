@@ -91,7 +91,7 @@ public class StoreWindow implements Runnable {
 		//centerRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 		//table.setDefaultRenderer(Integer.class, centerRenderer);
 		//table.getColumnModel().getColumn(1).setCellRenderer(new ReorderLabelRenderer());
-		ReorderLabelRenderer renderer = new ReorderLabelRenderer();
+		CellLabelRenderer renderer = new CellLabelRenderer();
 		Enumeration<TableColumn> cols = table.getColumnModel().getColumns();
 		while (cols.hasMoreElements()) {
 			cols.nextElement().setCellRenderer(renderer);
@@ -178,8 +178,8 @@ public class StoreWindow implements Runnable {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			//File currentDirectory = new File(System.getProperty("user.dir"));
-			//File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
-			File currentDirectory = new File("H:\\git\\CAB302_A2\\csv");
+			File currentDirectory = new File("C:\\Users\\alfer\\git\\CAB302_A2\\csv");
+			//File currentDirectory = new File("H:\\git\\CAB302_A2\\csv");
 			
 			// JFileChooser with overwrite confirmation dialogue
 			// source: https://stackoverflow.com/a/3729157

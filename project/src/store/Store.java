@@ -3,8 +3,6 @@ package store;
 import java.util.Map.Entry;
 import delivery.DeliveryException;
 import delivery.Manifest;
-import delivery.ManifestGenerator;
-import delivery.Truck;
 import stock.Item;
 import stock.Stock;
 import stock.StockException;
@@ -99,8 +97,18 @@ public class Store {
 	 * @throws StoreException via ManifestGenerator
 	 */
 	public Manifest exportManifest() throws StockException, DeliveryException, StoreException {
-		if (inventory.getItems().isEmpty()) throw new StoreException("No items need reordering");
-		return ManifestGenerator.generateManifest(inventory);
+		if (inventory.getItems().isEmpty()) throw new StoreException("No items to reorder");
+		
+		Stock reorderStock = new Stock();
+		for (Entry<Item, Integer> entry: inventory.getItems().entrySet()) {
+			Item item = entry.getKey();
+			int amount = entry.getValue();
+			if (amount <= item.getReorderPoint()) {
+				reorderStock.addItems(item, item.getReorderAmount());
+			}
+		}
+		if (reorderStock.getItems().isEmpty()) throw new StoreException("No items needs reordering");
+		return new Manifest(reorderStock);
 	}
 
 	/**
