@@ -8,7 +8,6 @@ import java.util.Enumeration;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableColumn;
 
 import csv.CSVFormatException;
@@ -57,10 +56,6 @@ public class StoreWindow implements Runnable {
 	private Store store = Store.getInstance();
 	JLabel labCap;
 	JTable table;
-	JButton btnProp;
-	JButton btnSales;
-	JButton btnExpMani;
-	JButton btnImpMani;
 	
 	public StoreWindow() throws HeadlessException {}
 	
@@ -106,11 +101,11 @@ public class StoreWindow implements Runnable {
 		table.getColumnModel().getColumn(5).setPreferredWidth(80);
 		table.getColumnModel().getColumn(6).setPreferredWidth(50);
 		updateTable();
-		
-		btnProp = new JButton("Load item properties");
-		btnSales = new JButton("Import sales log");
-		btnExpMani = new JButton("Export manifest");
-		btnImpMani = new JButton("Import manifest");
+
+		JButton btnProp = new JButton("Load item properties");
+		JButton btnSales = new JButton("Import sales log");
+		JButton btnExpMani = new JButton("Export manifest");
+		JButton btnImpMani = new JButton("Import manifest");
 		btnProp.setActionCommand("loadprop");
 		btnSales.setActionCommand("impsales");
 		btnExpMani.setActionCommand("expmani");
@@ -173,8 +168,6 @@ public class StoreWindow implements Runnable {
 	 *
 	 */
 	public class ButtonListener implements ActionListener {
-		private Store store = Store.getInstance();
-		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			//File currentDirectory = new File(System.getProperty("user.dir"));

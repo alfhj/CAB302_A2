@@ -21,7 +21,7 @@ import store.Store;
 public class StoreTableModel extends AbstractTableModel {
 
 	private static final long serialVersionUID = -907552824456549873L;
-	public String[] columnNames = new String[] {"Name", "Amount", "Cost", "Price", "Re.point", "Re.amount", "Temp."};
+	private String[] columnNames = new String[] {"Name", "Amount", "Cost", "Price", "Re.point", "Re.amount", "Temp."};
 	private Store store = Store.getInstance();
 	private ArrayList<Entry<Item, Integer>> sortedInventory;
 	

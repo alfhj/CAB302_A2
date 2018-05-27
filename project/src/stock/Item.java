@@ -67,7 +67,7 @@ public class Item {
 			this.cost = cost;
 		}
 		
-		if (price <= 0) {
+		if (price < 0) {
 			throw new StockException();
 		} else {
 			this.price = price;

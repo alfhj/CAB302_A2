@@ -47,20 +47,6 @@ public class Store {
 	}
 
 	/**
-	 * Initialises the store's inventory to the specified Stock.
-	 * The amounts in the stock is ignored and set to zero.
-	 * 
-	 * @param stock the initial stock
-	 * @throws StockException via Stock
-	 */
-	public void loadInventory(Stock stock) throws StockException {
-		inventory = new Stock();
-		for (Item item: stock.getItems().keySet()) {
-			inventory.addItems(item, 0);
-		}
-	}
-
-	/**
 	 * Returns the store's name
 	 * 
 	 * @return name
@@ -88,13 +74,27 @@ public class Store {
 	}
 
 	/**
-	 * Uses ManifestGenerator to generate a manifest
-	 * based on the store's current inventory.
+	 * Initialises the store's inventory to the specified Stock.
+	 * The amounts in the stock is ignored and set to zero.
+	 * 
+	 * @param stock the initial stock
+	 * @throws StockException via Stock
+	 */
+	public void loadInventory(Stock stock) throws StockException {
+		inventory = new Stock();
+		for (Item item: stock.getItems().keySet()) {
+			inventory.addItems(item, 0);
+		}
+	}
+	
+	/**
+	 * Generates a shipping manifest for the store's items that needs reordering.
 	 * 
 	 * @return the generated manifest
 	 * @throws StockException via ManifestGenerator
 	 * @throws DeliveryException via ManifestGenerator
-	 * @throws StoreException via ManifestGenerator
+	 * @throws StoreException if inventory is empty
+	 * @throws StoreException if no items needs reordering
 	 */
 	public Manifest exportManifest() throws StockException, DeliveryException, StoreException {
 		if (inventory.getItems().isEmpty()) throw new StoreException("No items to reorder");

@@ -1,5 +1,5 @@
 /**
- * CSV reading and writing
+ * CSV reading, writing and parsing
  * 
  * @author: alfhj
  */

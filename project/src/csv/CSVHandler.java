@@ -8,9 +8,17 @@ import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.regex.Pattern;
 
-import stock.*;
-import delivery.*;
-import store.*;
+import delivery.DeliveryException;
+import delivery.Manifest;
+import delivery.OrdinaryTruck;
+import delivery.RefrigeratedTruck;
+import delivery.Truck;
+import delivery.TruckFactory;
+import stock.Item;
+import stock.Stock;
+import stock.StockException;
+import store.Store;
+import store.StoreException;
 
 /**
  * Handles the reading and writing of relevant csv files.

@@ -1,11 +1,12 @@
 TODO:
-model public cols
+Fix failing Item test
+Take screenshots
+Finish report
+Update class diagram
 Make tests more robust
 Add comments to test cases
+Add messages to exceptions
 Refactor
-Take screenshots
-Update class diagram
-Finish report
 
 ---
 

@@ -24,4 +24,4 @@ hs_err_pid*
 # misc
 Thumbs.db
 *.csv
-project/doc
+doc/
