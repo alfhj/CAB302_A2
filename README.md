@@ -1,2 +1,2 @@
-# CAB302_A2
+# SoftwareDevelopmentAssignment
 Inventory management application
